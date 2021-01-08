@@ -12,6 +12,7 @@ I present you Google-Meet-Attendance, this is a easy to use extension which will
 # How it works
 ## Add Class
 Press on the extension icon above, you will be presented with a popup with the button Add class press it. You will see a create class card as seen below.
+
 ![Add Class presentation](https://github.com/Hereugo/Google-Meet-Attendance/blob/main/Github/Add-Class.gif)
 
 ## Edit and Delete Class
