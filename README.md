@@ -22,5 +22,6 @@ As said in Add Class section you will see Edit and Delete Class buttons, press o
 
 ## Viewing class attendance
 Go to Participants button in top right corner, when opened you will see a new feild called "Attendance" there you choose which class you would like to see also you have an option to see All, Early 🟢, Late 🟡, or Gone 🔴 students.
-![Attendance presentation]()
+![Attendance presentation](https://github.com/Hereugo/Google-Meet-Attendance/blob/main/Github/View-Attendance.png)
+
 If one of the students were marked wrong you can press the button next to the student name. (This works only for student who came Early or Late)
