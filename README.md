@@ -2,7 +2,7 @@
 With this chrome extension you can easily record which student attendant your class.
 
 # Link
-Currently the extension is not on CWS (chrome web store). To test the extension you have to set it up on your own.
+https://chrome.google.com/webstore/detail/google-meet-attendance/opkclbdjfkagpgoflleeeklgljfgfglk?hl=ru&authuser=0
 
 # Description
 Virtual classes have become the norm. 
