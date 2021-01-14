@@ -2,13 +2,11 @@ function clearNewClass() {
 	clearTags();
 	document.querySelector('.class-name').value = "";
 	document.querySelector('#tag-input').value = "";
-	document.querySelector('.class-start-time').value = "";
 	tags = [];
 }
 function createNewClass() {
 	
 	let className = document.querySelector('.class-name').value;
-	let time = document.querySelector('.class-start-time').value;
 	let students = [];
 	for (let i=0; i<tags.length; i++) {
 		students.push({
@@ -24,7 +22,6 @@ function createNewClass() {
 	let cls = {
 		'name': className,
 		'students': students,
-		'time': time,
 		'id': Date.now()
 	};
 
@@ -74,14 +71,14 @@ function AddHTMLCard() {
 
     	if (ifAdded) createAttendance();
     });
-
+    document.querySelector('.class-start-time').value = savedTimeChoosenStartTime;
 
     document.querySelector('.class-choice').onchange = sendFillClassList;
     document.querySelector('.show-choice').onchange = sendFillClassList;
-    console.log(updatedObserver);
+    document.querySelector('.class-start-time').onchange = sendFillClassList;
+
     if (updatedObserver === undefined) {
 	    updatedObserver = new MutationObserver(function(mutation) {
-	        console.log("WEIRD!");
 	        AddHTMLCard();
 	    });
 	    updatedObserver.observe(document.querySelector('.GvcuGe'), {
@@ -142,21 +139,34 @@ function editClass(id) {
         });
         addTags();
         document.querySelector('.class-name').value = classes[i].name;
-        document.querySelector('.class-start-time').value = classes[i].time;
     });
-    deleteClass(id);
 }
 function updateChoiceBox() {
 	let select = document.querySelector('.choose-2');
 	select.innerText = null;
-	chrome.storage.sync.get(['classes'], function (result) {
-		if (result.classes !== undefined) {
-			result.classes.forEach((cls) => {
-				var option = document.createElement("option");
-				option.text = cls.name;
-				option.value = cls.id;
-				select.add(option);
-			});
-		}
+	
+	function fixasync(callback) {
+		chrome.storage.sync.get(['classes'], function (result) {
+			if (result.classes !== undefined) {
+				result.classes.forEach((cls) => {
+					var option = document.createElement("option");
+					option.text = cls.name;
+					option.value = cls.id;
+					select.add(option);
+				});
+				callback(true);
+			}
+		});
+	}
+	fixasync(function(ye) {
+		if (ye) {select.selectedIndex = 0;}
 	});
+}
+
+function injectCurrentParticipants() {
+	joined = JSON.parse(sessionStorage.getItem('joined'));
+	joined.forEach((student) => {
+		tags.push(student.name);
+	});
+	addTags();
 }

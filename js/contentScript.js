@@ -1,3 +1,13 @@
+/*
+to do:
+-Inject current participants button +
+-Export button
+-Translation (english/russian)
+-Question icon button [sends to youtube link (if can shows right in google meet)]
+-Create video instuction for this app
+-Fix issues in github
+*/
+
 const readyObserver = new MutationObserver(function (mutations, me) {
     if (document.getElementsByClassName('c8mVDd')[0]) {
         let s = document.createElement('script')
@@ -15,15 +25,15 @@ readyObserver.observe(document.getElementsByClassName('crqnQb')[0], {
 //Globals
 var updatedObserver = undefined;
 var savedIndexSelectedClass = 1;
+var savedTimeChoosenStartTime = getCurrentTime();
 
+// create vars in chrome and session storage
+sessionStorage = window.sessionStorage;
+sessionStorage.setItem('joined', JSON.stringify([]));
 
-// create vars in chrome storage
 chrome.storage.sync.get(null, function(result) {
     if (!result['classes']) {
         chrome.storage.sync.set({'classes': []}, null);
-    }
-    if (!result['joined']) {
-        chrome.storage.sync.set({'joined': []}, null);
     }
 })
 
@@ -47,6 +57,7 @@ function initialize() {
                 // Adding functions to buttons
                 document.getElementById('Ok').addEventListener('click', createNewClass, false);
                 document.getElementById('Cancel').addEventListener('click', cancelNewClass, false);
+                document.getElementById('ICP').addEventListener('click', injectCurrentParticipants, false);
                 document.getElementById('tag-input').addEventListener('keyup', addNewTag, false);
                 document.querySelector('.tag-container').addEventListener('click', focusOnInput, false);
                 document.addEventListener('click', deleteTagCheck, false);
@@ -95,6 +106,11 @@ function twod(v) {
 function toMinutes(time) { // time is string example: "10:43"
     return Number(time.substring(0, 2)) * 60 + Number(time.substring(3));
 }
+function getCurrentTime() {
+    let now = new Date(), ctime = now.getHours() + ':' + twod( now.getMinutes() );
+    return ctime;
+}
+
 
 function choosenClass(classes) {
     let select = document.querySelector('.class-choice');
@@ -103,26 +119,29 @@ function choosenClass(classes) {
 
 // Save names and times when student entered to array 'joined' in chrome 
 function storeNames(names) {
-    let now = new Date(), ctime = now.getHours() + ':' + twod( now.getMinutes() );
-    chrome.storage.sync.get(['joined'], function(request) { //Optimize, O(n^2)
-        let joined = []
-        for (let i=0; i<names.length; i++) {
-            let flag = -1;
-            request.joined.forEach((student, j) => {
-                if (student.name == names[i])
-                    flag = j;
+    let ctime = getCurrentTime();
+
+    let joined = [];
+    let oldjoined = JSON.parse(sessionStorage.getItem('joined'));
+    console.log(oldjoined);
+    for (let i=0; i<names.length; i++) {
+        let flag = -1;
+        oldjoined.forEach((student, j) => {
+            if (student.name == names[i])
+                flag = j;
+        });
+        if (flag == -1) {
+            joined.push({
+                'name': names[i],
+                'time': ctime
             });
-            if (flag == -1) {
-                joined.push({
-                    'name': names[i],
-                    'time': ctime
-                });
-            } else {
-                joined.push(request.joined[flag]);
-            }
+        } else {
+            joined.push(oldjoined[flag]);
         }
-        chrome.storage.sync.set({'joined': joined}, null);
-    });
+    }
+    sessionStorage.setItem('joined', JSON.stringify(joined));
+
+    // console.log(JSON.parse(sessionStorage.getItem('joined')));
 }
 
 function updateOverwrite(data, callback) {
@@ -139,17 +158,20 @@ function updateOverwrite(data, callback) {
 function createAttendance() {
     let select = document.querySelector('.class-choice');
     let sortTime = document.querySelector('.show-choice');
+    let choosenTime = document.querySelector('.class-start-time').value;
 
     if (select.selectedIndex == -1) return;
     savedIndexSelectedClass = select.selectedIndex;
-
+    savedTimeChoosenStartTime = choosenTime;
 
     let selectedTime = sortTime.options[sortTime.selectedIndex].text;
 
     let ul = document.querySelector('.list-students');
     ul.innerHTML = "";
-    
-    chrome.storage.sync.get(['joined', 'classes'], function(request) {    
+
+    joined = JSON.parse(sessionStorage.getItem('joined'));
+    console.log(joined);
+    chrome.storage.sync.get(['classes'], function(request) {
         let classes = request.classes;
         let index = choosenClass(classes);
         
@@ -157,7 +179,7 @@ function createAttendance() {
             classes[index].students[i].marked = false;
 
         // Add Early and Late students to the list
-        request.joined.forEach((student) => {
+        joined.forEach((student) => {
             let flag = -1;
             classes[index].students.forEach((std, idx) => {
                 if (std.name == student.name)
@@ -194,7 +216,7 @@ function createAttendance() {
                     case 'All': {
                         switch (classes[index].students[flag].overwrite) {
                             case false: {
-                                if (toMinutes(student.time) <= toMinutes(classes[index].time))
+                                if (toMinutes(student.time) <= toMinutes(choosenTime))
                                     button.innerText = '🟢' // green
                                 else
                                     button.innerText = '🟡' // yellow
@@ -210,7 +232,7 @@ function createAttendance() {
                     case 'Early 🟢': { // green
                         switch (classes[index].students[flag].overwrite) {
                             case false: {
-                                if (toMinutes(student.time) <= toMinutes(classes[index].time))
+                                if (toMinutes(student.time) <= toMinutes(choosenTime))
                                     button.innerText = '🟢';
                                 else
                                     return;
@@ -229,7 +251,7 @@ function createAttendance() {
                     case 'Late 🟡': { // yellow
                         switch (classes[index].students[flag].overwrite) {
                             case false: {
-                                if (toMinutes(student.time) > toMinutes(classes[index].time))
+                                if (toMinutes(student.time) > toMinutes(choosenTime))
                                     button.innerText = '🟡';
                                 else
                                     return;

@@ -1,7 +1,7 @@
 {
-	"name": "Getting Started Extension",
+	"name": "Google Meet Attendance",
 	"version": "1.0",
-	"description": "Temp",
+	"description": "Monitor who attendant your class using this extension",
 	"background": {
 		"scripts": ["js/listeners.js"],
 		"persistent": false

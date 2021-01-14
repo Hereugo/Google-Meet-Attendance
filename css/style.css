@@ -22,7 +22,7 @@
     z-index: 102;
 
     width: 60%;
-    height: 60%;
+    height: auto;
 
     border-radius: 5px;
 }
@@ -36,6 +36,7 @@
     align-content: flex-start;
     padding: 3px;
     margin: 0px 0.5em 8px 0.5em;
+    min-height: 177px;
     max-height: 186px;
     overflow-y: auto;
     flex: 1 1 auto;
@@ -104,17 +105,18 @@
 .class-start-time {
     background-color: white;
     font-size: 14px;
+    margin-left: 2px; 
     padding: 0.3em 0.2em;
     border: solid 2px gray;
     border-radius: 5px;
 }
 #Cancel {
-    border: solid 2px gray;
     font-weight: 600;
-    font-family: inherit;
     color: #00796b;
     letter-spacing: 1.5px;
+    font-family: inherit;
     padding: 0.5em 1em;
+    border: solid 2px gray;
     background: white;
     text-transform: uppercase;
 }
@@ -127,6 +129,17 @@
     background: #00796b;
     margin-left: 1em; 
     border: none;
+    text-transform: uppercase;
+}
+#ICP {
+    font-weight: 600;
+    color: #00796b;
+    letter-spacing: 1.5px;
+    font-family: inherit;
+    padding: 0.5em 1em;
+    border: solid 2px gray;
+    margin: 0 0.5em;
+    background: white;
     text-transform: uppercase;
 }
 .separator {
@@ -148,6 +161,7 @@
     font-family: 'Google Sans';
     font-size: 14px;
     border-radius: 7%;
+    margin-right: auto; 
 }
 .list-container {
     width: auto;
@@ -267,4 +281,9 @@
     background: white;
     float: right;
     text-transform: uppercase;
+}
+
+
+#Cancel:hover, #Cancel-2:hover, #Ok:hover, #Okay-2:hover, #ICP:hover, .save-button:hover {
+    filter: brightness(90%);
 }

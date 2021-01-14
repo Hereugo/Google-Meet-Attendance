@@ -16,14 +16,11 @@ const cardHTML = `<div
             <p> Class name </p>
             <input class="class-name"/>
         </div>
-        <div style="display: flex; flex-direction: row; align-items: center; margin: 0 0.5em;">
-            <p> Period start </p>
-            <input class="class-start-time" type="time"/>
-        </div>
         <p class="student-names" style="width: auto;"> Student names </p>
         <div class="tag-container">
             <input id="tag-input"/>
         </div>
+        <button id="ICP"> Inject all current participants </button>
         <div class="separator"></div>
         <div class="buttons">
             <button id="Cancel">Cancel</button>
@@ -49,6 +46,9 @@ const cardHTML2 = `
                 <option>Late 🟡</option>
                 <option>Gone 🔴</option>
             </select>
+
+            <p> Period start: </p>
+            <input class="class-start-time" type="time"/>
         </div>
     </div>
     <div class="list-container">
