@@ -5,7 +5,6 @@ function clearNewClass() {
 	tags = [];
 }
 function createNewClass() {
-	
 	let className = document.querySelector('.class-name').value;
 	let students = [];
 	for (let i=0; i<tags.length; i++) {
@@ -28,6 +27,10 @@ function createNewClass() {
 	chrome.storage.sync.get(['classes'], function (result) {
 		classes = result.classes;
 		classes.push(cls);
+		if (fromEdit != -1) {
+			classes.splice(getIndexOfClassById(fromEdit, classes), 1);
+			fromEdit = -1;
+		}
 		chrome.storage.sync.set({'classes': classes}, null);
 	});
 }
@@ -72,6 +75,7 @@ function AddHTMLCard() {
     	if (ifAdded) createAttendance();
     });
     document.querySelector('.class-start-time').value = savedTimeChoosenStartTime;
+    document.querySelector('.save-button').addEventListener('click', exportAttendance, false);
 
     document.querySelector('.class-choice').onchange = sendFillClassList;
     document.querySelector('.show-choice').onchange = sendFillClassList;
@@ -133,7 +137,7 @@ function editClass(id) {
         let classes = request.classes;
         
         let i = getIndexOfClassById(id, classes);
-        
+        fromEdit = id;
         classes[i].students.forEach((student) => {
             tags.push(student.name);
         });
@@ -169,4 +173,42 @@ function injectCurrentParticipants() {
 		tags.push(student.name);
 	});
 	addTags();
+}
+
+function getCurrentDateFormat() {
+	let today = new Date();
+	let dd = String(today.getDate()).padStart(2, '0');
+	let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	let yyyy = today.getFullYear();
+
+	return mm + '/' + dd + '/' + yyyy;
+}
+
+function exportAttendance() {
+	let text = "";
+	let listName = document.querySelectorAll('.student>p');
+	let listTime = document.querySelectorAll('.student>button');
+	for (let i=0; i<listName.length; i++) {
+		text += `${listTime[i].label} -=- ${listName[i].innerText}\n`;
+	}
+
+	let filename = ""; //[class]-[TimeStamp]-[date].txt format
+	let select = document.querySelector('.class-choice');
+    let sortTime = document.querySelector('.show-choice');
+	
+	//sortTime.options[sortTime.selectedIndex].text;
+	filename += select.options[select.selectedIndex].text + '-';
+	filename += sortTime.options[sortTime.selectedIndex].text + '-';
+	filename += getCurrentDateFormat() + '.txt';
+
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
 }

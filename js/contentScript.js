@@ -1,11 +1,8 @@
 /*
 to do:
--Inject current participants button +
--Export button
 -Translation (english/russian)
 -Question icon button [sends to youtube link (if can shows right in google meet)]
 -Create video instuction for this app
--Fix issues in github
 */
 
 const readyObserver = new MutationObserver(function (mutations, me) {
@@ -26,6 +23,7 @@ readyObserver.observe(document.getElementsByClassName('crqnQb')[0], {
 var updatedObserver = undefined;
 var savedIndexSelectedClass = 1;
 var savedTimeChoosenStartTime = getCurrentTime();
+var fromEdit = -1;
 
 // create vars in chrome and session storage
 sessionStorage = window.sessionStorage;
@@ -216,14 +214,22 @@ function createAttendance() {
                     case 'All': {
                         switch (classes[index].students[flag].overwrite) {
                             case false: {
-                                if (toMinutes(student.time) <= toMinutes(choosenTime))
+                                if (toMinutes(student.time) <= toMinutes(choosenTime)) {
                                     button.innerText = '🟢' // green
-                                else
+                                    button.label = 'Early';
+                                }
+                                else {
                                     button.innerText = '🟡' // yellow
+                                    button.label = 'Late';
+                                }
                                 break;
                             }
                             default: {
                                 button.innerText = classes[index].students[flag].overwrite;
+                                if (classes[index].students[flag].overwrite == '🟢')
+                                    button.label = 'Early';
+                                else
+                                    button.label = 'Late';
                                 break;
                             }
                         }
@@ -232,14 +238,17 @@ function createAttendance() {
                     case 'Early 🟢': { // green
                         switch (classes[index].students[flag].overwrite) {
                             case false: {
-                                if (toMinutes(student.time) <= toMinutes(choosenTime))
+                                if (toMinutes(student.time) <= toMinutes(choosenTime)) {
                                     button.innerText = '🟢';
+                                    button.label = 'Early';
+                                }
                                 else
                                     return;
                                 break;
                             }
                             case '🟢': {
                                 button.innerText = '🟢';
+                                button.label = 'Early';
                                 break;
                             }
                             default: {
@@ -251,14 +260,17 @@ function createAttendance() {
                     case 'Late 🟡': { // yellow
                         switch (classes[index].students[flag].overwrite) {
                             case false: {
-                                if (toMinutes(student.time) > toMinutes(choosenTime))
+                                if (toMinutes(student.time) > toMinutes(choosenTime)) {
                                     button.innerText = '🟡';
+                                    button.label = 'Late';
+                                }
                                 else
                                     return;
                                 break;
                             }
                             case '🟡': {
                                 button.innerText = '🟡';
+                                button.label = 'Late';
                                 break;
                             }
                             default: {
@@ -292,6 +304,7 @@ function createAttendance() {
 
                     let button = document.createElement('button');
                     button.innerText = '🔴'; // red
+                    button.label = 'Gone';
 
                     li.appendChild(button);
                     li.appendChild(name);
