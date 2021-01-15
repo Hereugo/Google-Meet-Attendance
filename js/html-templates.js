@@ -13,7 +13,7 @@ const cardHTML = `<div
         <h2 class="new-class-name"> New Class </h2>
         <div class="separator"></div>
         <div style="display: flex; flex-direction: row; align-items: center; margin: 0 0.5em;">
-            <p> Class name </p>
+            <p class="input-name-class-name"> Class name </p>
             <input class="class-name"/>
         </div>
         <p class="student-names" style="width: auto;"> Student names </p>
@@ -31,23 +31,19 @@ const cardHTML = `<div
 
 const cardHTML2 = `
 <div class="container">
-    <h4 class="isOLae" style="padding-left: 0px;">Attendance</h4>
+    <h4 class="isOLae card-title-2" style="padding-left: 0px;">Attendance</h4>
     <div class="settings">
         <div style="display: flex; flex-direction: row; align-items: center;">
-            <p style="width: 50px;"> Class: </p>
+            <p class="class-choice-name" style="width: 50px;"> Class: </p>
             <select class="class-choice">
             </select>
         </div>
         <div style="display: flex; flex-direction: row; align-items: center;">
-            <p style="width: 50px;"> Display: </p>
+            <p class="show-choice-name" style="width: 50px;"> Display: </p>
             <select class="show-choice">
-                <option>All</option>
-                <option>Early 🟢</option>
-                <option>Late 🟡</option>
-                <option>Gone 🔴</option>
             </select>
 
-            <p> Period start: </p>
+            <p class="class-start-time-name"> Period start: </p>
             <input class="class-start-time" type="time"/>
         </div>
     </div>

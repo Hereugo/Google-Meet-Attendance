@@ -64,6 +64,22 @@ function updateSelectClassChoice(callback) {
 function AddHTMLCard() {
     const infoOnMeet = document.getElementsByClassName('ggUFBf')[1];
     infoOnMeet.insertAdjacentHTML('afterbegin', cardHTML2);
+    
+    //Language thingy
+    chrome.storage.sync.get(['lang'], function(response) {
+    	let currentLang = response.lang;
+	    document.querySelector('.card-title-2').innerText = meetLanguage[currentLang]['cardHTML2']['card_title_2'];
+	    document.querySelector('.class-choice-name').innerText = meetLanguage[currentLang]['cardHTML2']['class_choice_name'];
+	    document.querySelector('.show-choice-name').innerText = meetLanguage[currentLang]['cardHTML2']['show_choice_name'];
+	    meetLanguage[currentLang]['cardHTML2']['show_choice'].forEach((elm)=> {
+	    	let option = document.createElement('option');
+	    	option.text = elm;
+	    	document.querySelector('.show-choice').appendChild(option);
+	    });
+	    document.querySelector('.class-start-time-name').innerText = meetLanguage[currentLang]['cardHTML2']['class_start_time_name'];
+	    document.querySelector('.save-button').innerText = meetLanguage[currentLang]['cardHTML2']['save_button'];
+    });
+    //------------------------
 
     updateSelectClassChoice(function(ifAdded) {
     	let select = document.querySelector('.class-choice');

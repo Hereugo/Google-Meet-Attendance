@@ -1,6 +1,6 @@
 {
 	"name": "Google Meet Attendance",
-	"version": "1.0",
+	"version": "1.1",
 	"description": "Monitor who attendant your class using this extension",
 	"background": {
 		"scripts": ["js/listeners.js"],
@@ -10,7 +10,7 @@
 	"content_scripts": [
 		{
 			"matches": ["*://meet.google.com/**-**-**"],
-			"js": ["js/contentScript.js", "js/classButtons.js", "js/tagbox-logic.js", "js/html-templates.js"],
+			"js": ["js/contentScript.js", "js/classButtons.js", "js/tagbox-logic.js", "js/html-templates.js", "js/translations.js"],
 			"css": ["css/style.css"]
 		}
 	],

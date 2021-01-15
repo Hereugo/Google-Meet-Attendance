@@ -1,6 +1,5 @@
 /*
 to do:
--Translation (english/russian)
 -Question icon button [sends to youtube link (if can shows right in google meet)]
 -Create video instuction for this app
 */
@@ -24,6 +23,7 @@ var updatedObserver = undefined;
 var savedIndexSelectedClass = 1;
 var savedTimeChoosenStartTime = getCurrentTime();
 var fromEdit = -1;
+var lastSeenLang = 'en';
 
 // create vars in chrome and session storage
 sessionStorage = window.sessionStorage;
@@ -33,7 +33,12 @@ chrome.storage.sync.get(null, function(result) {
     if (!result['classes']) {
         chrome.storage.sync.set({'classes': []}, null);
     }
-})
+    if (!result['lang']) {
+        chrome.storage.sync.set({'lang': 'en'}, null);
+    } else {
+        lastSeenLang = result['lang'];
+    }
+});
 
 
 function initialize() {
@@ -74,6 +79,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     switch(request.data) {
         case 'add-class': {
             document.getElementById('card1').style.visibility = 'visible';
+            updateCard1();
             break;
         }
         case 'edit-class': {
@@ -82,7 +88,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             updateChoiceBox();
             document.getElementById('Okay-2').className = "";
             document.getElementById('Okay-2').classList.add('Edit');
-            document.getElementById('Okay-2').innerText = "Edit";
+            
+            updateCard2("Edit");
             break;
         }
         case 'del-class': {
@@ -91,12 +98,22 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             updateChoiceBox();
             document.getElementById('Okay-2').className = "";
             document.getElementById('Okay-2').classList.add('Delete');
-            document.getElementById('Okay-2').innerText = "Delete";
+            
+            updateCard2("Delete");
+            break;
+        }
+        case 'upd-lang': {
+            lastSeenLang = request.value;
+            chrome.storage.sync.set({'lang': request.value}, null);
+            sendResponse({'data': meetLanguage});
+            break;
+        }
+        case 'get-lang': {
+            sendResponse({'data': lastSeenLang, 'v': meetLanguage});
             break;
         }
     }
 });
-
 
 function twod(v) {
     return ('0'+Number(v)).slice(-2);
@@ -105,7 +122,7 @@ function toMinutes(time) { // time is string example: "10:43"
     return Number(time.substring(0, 2)) * 60 + Number(time.substring(3));
 }
 function getCurrentTime() {
-    let now = new Date(), ctime = now.getHours() + ':' + twod( now.getMinutes() );
+    let now = new Date(), ctime = twod(now.getHours()) + ':' + twod( now.getMinutes() );
     return ctime;
 }
 
@@ -162,14 +179,14 @@ function createAttendance() {
     savedIndexSelectedClass = select.selectedIndex;
     savedTimeChoosenStartTime = choosenTime;
 
-    let selectedTime = sortTime.options[sortTime.selectedIndex].text;
+    let selectedTime = sortTime.selectedIndex;
 
     let ul = document.querySelector('.list-students');
     ul.innerHTML = "";
 
     joined = JSON.parse(sessionStorage.getItem('joined'));
     console.log(joined);
-    chrome.storage.sync.get(['classes'], function(request) {
+    chrome.storage.sync.get(['classes', 'lang'], function(request) {
         let classes = request.classes;
         let index = choosenClass(classes);
         
@@ -211,7 +228,7 @@ function createAttendance() {
                 }, false);
                 console.log(selectedTime, classes[index].students[flag])
                 switch (selectedTime) {
-                    case 'All': {
+                    case 0: {
                         switch (classes[index].students[flag].overwrite) {
                             case false: {
                                 if (toMinutes(student.time) <= toMinutes(choosenTime)) {
@@ -235,12 +252,12 @@ function createAttendance() {
                         }
                         break;
                     }
-                    case 'Early 🟢': { // green
+                    case 1: { // green
                         switch (classes[index].students[flag].overwrite) {
                             case false: {
                                 if (toMinutes(student.time) <= toMinutes(choosenTime)) {
                                     button.innerText = '🟢';
-                                    button.label = 'Early';
+                                    button.label = (request.lang == 'en')?'Early':'Ранний';
                                 }
                                 else
                                     return;
@@ -248,7 +265,7 @@ function createAttendance() {
                             }
                             case '🟢': {
                                 button.innerText = '🟢';
-                                button.label = 'Early';
+                                button.label = (request.lang == 'en')?'Early':'Ранний';
                                 break;
                             }
                             default: {
@@ -257,12 +274,12 @@ function createAttendance() {
                         }
                         break;
                     }
-                    case 'Late 🟡': { // yellow
+                    case 2: { // yellow
                         switch (classes[index].students[flag].overwrite) {
                             case false: {
                                 if (toMinutes(student.time) > toMinutes(choosenTime)) {
                                     button.innerText = '🟡';
-                                    button.label = 'Late';
+                                    button.label = (request.lang == 'en')?'Late':'Опоздавший';
                                 }
                                 else
                                     return;
@@ -270,7 +287,7 @@ function createAttendance() {
                             }
                             case '🟡': {
                                 button.innerText = '🟡';
-                                button.label = 'Late';
+                                button.label = (request.lang == 'en')?'Late':'Опоздавший';
                                 break;
                             }
                             default: {
@@ -279,7 +296,7 @@ function createAttendance() {
                         }
                         break;
                     }
-                    case 'Gone 🔴': {
+                    case 3: {
                         return;
                     }
                 }
@@ -293,7 +310,7 @@ function createAttendance() {
         });
 
         //Add Gone students to the list
-        if (selectedTime == 'All' || selectedTime == 'Gone 🔴')
+        if (selectedTime == 0 || selectedTime == 3)
             classes[index].students.forEach((student, flag) => {
                 if (!student.marked) {
                     student.overwrite = false;
@@ -304,7 +321,7 @@ function createAttendance() {
 
                     let button = document.createElement('button');
                     button.innerText = '🔴'; // red
-                    button.label = 'Gone';
+                    button.label = (request.lang == 'en')?'Gone':'Отсутствующий';
 
                     li.appendChild(button);
                     li.appendChild(name);
