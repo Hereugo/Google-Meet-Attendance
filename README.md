@@ -18,7 +18,7 @@ Press on the extension icon above, you will be presented with a popup with the b
 ## Edit and Delete Class
 As said in Add Class section you will see Edit and Delete Class buttons, press one of them and you will be presented with a card Select Class.
 
-![Select Class presentation](https://github.com/Hereugo/Google-Meet-Attendance/blob/main/Github/Edit-Class.png)
+![Select Class presentation](https://github.com/Hereugo/Google-Meet-Attendance/blob/main/Github/Edit-Del-Class.png)
 
 ## Viewing class attendance
 Go to Participants button in top right corner, when opened you will see a new feild called "Attendance" there you choose which class you would like to see also you have an option to see All, Early 🟢, Late 🟡, or Gone 🔴 students.
