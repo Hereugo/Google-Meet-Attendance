@@ -11,16 +11,16 @@ Google-Meet-Attendance is a convenient extension which helps teachers take stude
 
 # How it works
 ## Creating a New Class
-   1. Open Class Settings. 
-   2. Click the green “Add Class” button. This will bring up Edit Options.
-   3. Fill in the class name 
-   4. Fill in the student names:
-       a. Automatically (Recommended):
-           i. Make sure that all your students in the class are present on the Google Meet.
-           ii. Click on “Add All Current Students”. We recommend this option because it will save your time. After this, Attendance Manager will automatically sort students.
-        b. Manually:
-            i. Write down the student’s Google Account names in the box. To delete names, click on the X button next to the name. 
-   5. Press on the green “Save” button.
+      1. Open Class Settings. 
+      2. Click the green “Add Class” button. This will bring up Edit Options.
+      3. Fill in the class name 
+      4. Fill in the student names:
+      a. Automatically (Recommended):
+      i. Make sure that all your students in the class are present on the Google Meet.
+      ii. Click on “Add All Current Students”. We recommend this option because it will save your time. After this, Attendance Manager will automatically sort students.
+           b. Manually:
+               i. Write down the student’s Google Account names in the box. To delete names, click on the X button next to the name. 
+      5. Press on the green “Save” button.
 
 ![Add Class presentation](https://github.com/Hereugo/Google-Meet-Attendance/blob/main/Github/Add-Class.gif)
 
