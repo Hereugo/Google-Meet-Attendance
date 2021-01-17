@@ -10,6 +10,10 @@ Teachers have to manually check student participation.
 Google-Meet-Attendance is a convenient extension which helps teachers take student attendance: create a class with student names and schedule starting time. The extension will automatically sort students in to Early 🟢, Late 🟡, or Gone 🔴.
 
 # How it works
+## Video Demonstration
+English - https://www.youtube.com/watch?v=tmbJG689QK8
+Russian - https://www.youtube.com/watch?v=N120cqQSyiQ
+
 ## Creating a New Class
       1. Open Class Settings. 
       2. Click the green “Add Class” button. This will bring up Edit Options.
