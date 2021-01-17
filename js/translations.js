@@ -11,14 +11,14 @@ var meetLanguage = {
 			new_class_name: 'New Class',
 			input_name_class_name: 'Class name',
 			student_names: 'Student names',
-			ICP: 'Inject all current participants',
+			ICP: 'Add all current students', // ICP - "Inject current participants"
 			Cancel: 'Cancel',
 			Ok: 'Save',
 		},
 		cardHTML2: {
 			card_title_2: 'Attendance',
 			class_choice_name: 'Class:',
-			show_choice_name: 'Display',
+			show_choice_name: 'Sort:',
 			show_choice: ['All', 'Early 🟢', 'Late 🟡', 'Gone 🔴'],
 			class_start_time_name: 'Period start:',
 			save_button: 'Export',
@@ -40,14 +40,14 @@ var meetLanguage = {
 			new_class_name: 'Новый Класс',
 			input_name_class_name: 'Имя класса',
 			student_names: 'Имя участников',
-			ICP: 'Добавить всех нынешних участников',
+			ICP: 'Добавить всех нынешних учеников',
 			Cancel: 'Отменить',
 			Ok: 'Сохранить',
 		},
 		cardHTML2: {
 			card_title_2: 'Посещаемость',
 			class_choice_name: 'Класс:',
-			show_choice_name: 'показ:',
+			show_choice_name: 'Показ:',
 			show_choice: ['Всех', 'Ранних 🟢', 'Поздних 🟡', 'Ушедший 🔴'],
 			class_start_time_name: 'Время:',
 			save_button: 'Сохранить',
@@ -60,25 +60,18 @@ var meetLanguage = {
 }
 
 function updateCard1() {
-    chrome.storage.sync.get(['lang'], function(response) {
-        let currentLang = response.lang;
-        document.querySelector('.new-class-name').innerText = meetLanguage[currentLang]['cardHTML']['new_class_name'];
-        document.querySelector('.input-name-class-name').innerText = meetLanguage[currentLang]['cardHTML']['input_name_class_name'];
-        document.querySelector('.student-names').innerText = meetLanguage[currentLang]['cardHTML']['student_names'];
-        document.querySelector('#ICP').innerText = meetLanguage[currentLang]['cardHTML']['ICP'];
-        document.querySelector('#Cancel').innerText = meetLanguage[currentLang]['cardHTML']['Cancel'];
-        document.querySelector('#Ok').innerText = meetLanguage[currentLang]['cardHTML']['Ok'];
-    });
- 
+    document.querySelector('.new-class-name').innerText = meetLanguage[lastSeenLang]['cardHTML']['new_class_name'];
+    document.querySelector('.input-name-class-name').innerText = meetLanguage[lastSeenLang]['cardHTML']['input_name_class_name'];
+    document.querySelector('.student-names').innerText = meetLanguage[lastSeenLang]['cardHTML']['student_names'];
+    document.querySelector('#ICP').innerText = meetLanguage[lastSeenLang]['cardHTML']['ICP'];
+    document.querySelector('#Cancel').innerText = meetLanguage[lastSeenLang]['cardHTML']['Cancel'];
+    document.querySelector('#Ok').innerText = meetLanguage[lastSeenLang]['cardHTML']['Ok'];
 }
 function updateCard2(str) {
-    chrome.storage.sync.get(['lang'], function(response) {
-        let currentLang = response.lang;
-        document.querySelector('.name-2').innerText = meetLanguage[currentLang]['cardHTML3']['name_2'];
-        document.querySelector('#Cancel-2').innerText = meetLanguage[currentLang]['cardHTML3']['Cancel_2'];
-        if (str == "Edit")
-            document.getElementById('Okay-2').innerText = (currentLang == 'en')?"Edit":"Изменить";
-        else
-            document.getElementById('Okay-2').innerText = (currentLang == 'en')?"Delete":"Удалить";
-    });
+    document.querySelector('.name-2').innerText = meetLanguage[lastSeenLang]['cardHTML3']['name_2'];
+    document.querySelector('#Cancel-2').innerText = meetLanguage[lastSeenLang]['cardHTML3']['Cancel_2'];
+    if (str == "Edit")
+        document.getElementById('Okay-2').innerText = (lastSeenLang == 'en')?"Edit":"Изменить";
+    else
+        document.getElementById('Okay-2').innerText = (lastSeenLang == 'en')?"Delete":"Удалить";
 }

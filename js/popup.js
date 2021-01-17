@@ -1,5 +1,7 @@
-document.addEventListener('DOMContentLoaded', function() {
+ document.addEventListener('DOMContentLoaded', function() {
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		if (!tabs[0].url.match(/https:\/\/meet.google.com\/.+-.+-.+/)) return;
+
 		document.querySelector('.popup-add-class').addEventListener('click', function() {
 			chrome.tabs.sendMessage(tabs[0].id, {data: 'add-class'});
 			window.close();
@@ -12,11 +14,13 @@ document.addEventListener('DOMContentLoaded', function() {
 			chrome.tabs.sendMessage(tabs[0].id, {data: 'del-class'});
 			window.close();
 		}, false);
+
 		let langChoice = document.querySelector('.language-choice');
 		langChoice.onchange = function() {
 			let currentLang = langChoice.options[langChoice.selectedIndex].text;
 			chrome.tabs.sendMessage(tabs[0].id, {data: 'upd-lang', value: currentLang}, function(r) {
 				updatePopup(r.data, currentLang);
+
 			});
 		};
 
@@ -38,4 +42,10 @@ function updatePopup(r, currentLang) {
 	document.querySelector('.popup-edit-class').innerText = r[currentLang]['popup']['popup_edit_class'];
 	document.querySelector('.popup-del-class').innerText = r[currentLang]['popup']['popup_del_class'];	
 	document.querySelector('#language').innerText = r[currentLang]['popup']['language'];
+
+	let btn = document.querySelector('#HELP');
+	if (currentLang == 'en') 
+		btn.href = 'https://www.youtube.com/watch?v=xhnKGd76ZOg';
+	else
+		btn.href = 'https://www.youtube.com/watch?v=VyXnD_9f6Kg'; 
 }

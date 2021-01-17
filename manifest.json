@@ -14,7 +14,7 @@
 			"css": ["css/style.css"]
 		}
 	],
-	"permissions": ["storage"],
+	"permissions": ["storage", "tabs"],
 	"browser_action": {
 		"default_icon": "img/Google meet attendance icon.png",
 		"default_popup": "html/popup.html"

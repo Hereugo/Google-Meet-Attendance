@@ -14,6 +14,7 @@
       }
       .popup-name {
         text-align: center;
+        margin-left: auto;
         letter-spacing: 1.5px;
         font-weight: 400;
         margin: 0;
@@ -48,8 +49,14 @@
     </style>
   </head>
   <body>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <div class="popup-container">
-      <h2 class="popup-name"> Class </h2>
+      <div style="display: flex; flex-direction: row; align-items: center;">
+        <h2 class="popup-name"> Class </h2>
+        <a id="HELP" target="_blank" style="margin-left: auto; color: black;">
+          <i class="material-icons" data-item="help">help</i>
+        </a>
+      </div>
       <div class="separator"></div> 
       <div class="buttons"> 
         <button class="popup-add-class">Add Class</button>

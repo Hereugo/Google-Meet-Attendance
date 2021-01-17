@@ -123,12 +123,13 @@ function cancelChoice() {
 }
 function OkChoice() {
 	let select = document.querySelector('.choose-2');
-	switch(document.getElementById('Okay-2').innerText) {
-		case 'EDIT': {
+	let text = document.getElementById('Okay-2').innerText;
+	switch(true) {
+		case text == 'EDIT' || text == 'ИЗМЕНИТЬ': {
 			editClass(select.options[select.selectedIndex].value);
 			break;
 		}
-		case 'DELETE': {
+		case text == 'DELETE' || text == 'УДАЛИТЬ': {
 			deleteClass(select.options[select.selectedIndex].value);
 			break;
 		}
@@ -149,6 +150,7 @@ function deleteClass(id) {
 }
 function editClass(id) {
 	document.getElementById('card1').style.visibility = 'visible';
+	updateCard1();
     chrome.storage.sync.get(['classes'], function (request) {
         let classes = request.classes;
         
@@ -186,7 +188,13 @@ function updateChoiceBox() {
 function injectCurrentParticipants() {
 	joined = JSON.parse(sessionStorage.getItem('joined'));
 	joined.forEach((student) => {
-		tags.push(student.name);
+		let no = false;
+		for (let i=0; i<tags.length; i++)
+			if (tags[i] == student.name) {
+				no = true;
+				break;
+			}
+		if (!no) tags.push(student.name);
 	});
 	addTags();
 }

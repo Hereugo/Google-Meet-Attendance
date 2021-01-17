@@ -20,7 +20,7 @@ const cardHTML = `<div
         <div class="tag-container">
             <input id="tag-input"/>
         </div>
-        <button id="ICP"> Inject all current participants </button>
+        <button id="ICP"> Add All current students </button>
         <div class="separator"></div>
         <div class="buttons">
             <button id="Cancel">Cancel</button>
@@ -39,7 +39,7 @@ const cardHTML2 = `
             </select>
         </div>
         <div style="display: flex; flex-direction: row; align-items: center;">
-            <p class="show-choice-name" style="width: 50px;"> Display: </p>
+            <p class="show-choice-name" style="width: 50px;"> Sort: </p>
             <select class="show-choice">
             </select>
 

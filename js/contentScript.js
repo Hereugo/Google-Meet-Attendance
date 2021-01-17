@@ -208,7 +208,7 @@ function createAttendance() {
                 let li = document.createElement('li');
                 li.setAttribute('class', 'student');
                 let name = document.createElement('p');
-                name.innerText = student.name;
+                name.innerText = student.name + " (" + student.time + ")";
 
                 let button = document.createElement('button');
                 button.id = ('' + index) + '|' + ('' + flag);
