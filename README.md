@@ -11,7 +11,7 @@ Google-Meet-Attendance is a convenient extension which helps teachers take stude
 
 # How it works
 ## Video Demonstration
-English - https://www.youtube.com/watch?v=tmbJG689QK8 \n
+English - https://www.youtube.com/watch?v=tmbJG689QK8  
 Russian - https://www.youtube.com/watch?v=N120cqQSyiQ
 
 ## Creating a New Class
