@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="./css/pro.min.css">
+	<style>
+		.circle {
+		    padding: 12px;
+		    border-radius: 50%;
+		    background: transparent;
+		    font-size: 24px;
+		    text-align: center;
+		    width: 24px;
+		    height: 24px;
+		}
+		.circle i {
+			width: 24px;
+			height: 24px;
+		}
+		.block:hover .circle{
+			background: #ccc;
+		}
+		.block {
+			background: red;
+			width: fit-content;
+			/*margin: 0 auto;*/
+		}
+		.lol {
+			color: transparent;
+			background: transparent;
+			position: absolute;
+		    cursor: pointer;
+		    width: 48px;
+		    height: 48px;
+		    padding: 0;
+		    margin: 0;
+		    border: none;
+		    outline: none;
+		}
+		.lol:focus + .circle i{
+			color: #8ab4f8;
+		}
+	</style>
+</head>
+<body>
+	<div class="block">
+		<input class="lol">
+		<div class="circle">
+			<i class="fal fa-clipboard-user"></i>
+		</div>
+	</div>
+	<script type="text/javascript">
+		console.group("Group 1");
+		console.log("hey!");
+		console.log("hey!");
+		console.group("Group 2");
+		console.log("hey!");
+		console.log("hey!");
+		console.groupEnd();
+	</script>
+</body>
+</html>

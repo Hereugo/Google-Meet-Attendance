@@ -1,18 +1,9 @@
-/*
-to do:
--Inject current participants button +
--Export button
--Translation (english/russian)
--Question icon button [sends to youtube link (if can shows right in google meet)]
--Create video instuction for this app
--Fix issues in github
-*/
-
+// Initialize when meeting starts
 const readyObserver = new MutationObserver(function (mutations, me) {
     if (document.getElementsByClassName('c8mVDd')[0]) {
-        let s = document.createElement('script')
-        s.src = chrome.runtime.getURL('js/inject.js')
-        document.documentElement.appendChild(s)
+        let s = document.createElement('script');
+        s.src = chrome.runtime.getURL('js/inject.js');
+        document.documentElement.appendChild(s);
         initialize();
         me.disconnect();
     }
@@ -22,20 +13,23 @@ readyObserver.observe(document.getElementsByClassName('crqnQb')[0], {
     subtree: true,
 });
 
-//Globals
-var updatedObserver = undefined;
-var savedIndexSelectedClass = 1;
-var savedTimeChoosenStartTime = getCurrentTime();
 
-// create vars in chrome and session storage
-sessionStorage = window.sessionStorage;
-sessionStorage.setItem('joined', JSON.stringify([]));
+//Globals
+const sessionStorage = window.sessionStorage;
+sessionStorage.setItem('joined', JSON.stringify({}));
 
 chrome.storage.sync.get(null, function(result) {
     if (!result['classes']) {
         chrome.storage.sync.set({'classes': []}, null);
     }
-})
+    if (!result['lang']) {
+        chrome.storage.sync.set({'lang': 'en'}, null);
+    }
+});
+var updatedObserver = undefined;
+var savedIndexSelectedClass = 1;
+var savedTimeChoosenStartTime = getCurrentTime();
+var fromEdit = -1;
 
 
 function initialize() {
@@ -45,27 +39,29 @@ function initialize() {
         },
         function (response) {
             if (response.ready) {
-                // Create divs and buttons
-                const screen = document.getElementsByClassName('crqnQb')[0];
+                // MANAGE CARD SYSTEM
+                    // Create divs and buttons
+                    const screen = $('.crqnQb');
 
-                screen.insertAdjacentHTML('afterbegin', cardHTML);
-                document.getElementById('card1').style.visibility = 'hidden';
-                
-                screen.insertAdjacentHTML('afterbegin', cardHTML3);
-                document.getElementById('card2').style.visibility = 'hidden';
+                    screen.append(classHTML);
+                    screen.append(editHTML);
+                    screen.append(deleteHTML);
 
-                // Adding functions to buttons
-                document.getElementById('Ok').addEventListener('click', createNewClass, false);
-                document.getElementById('Cancel').addEventListener('click', cancelNewClass, false);
-                document.getElementById('ICP').addEventListener('click', injectCurrentParticipants, false);
-                document.getElementById('tag-input').addEventListener('keyup', addNewTag, false);
-                document.querySelector('.tag-container').addEventListener('click', focusOnInput, false);
-                document.addEventListener('click', deleteTagCheck, false);
-                document.getElementById('Cancel-2').addEventListener('click', cancelChoice, false);
-                document.getElementById('Okay-2').addEventListener('click', OkChoice, false);
+                    // Adding functions to buttons
+                    $('#Ok').click(createNewClass);
+                    $('.Cancel').click(cancelCard);
+                    $('#ICP').click(injectCurrentParticipants);
+                    $('#tag-input').keyup(addNewTag);
+                    $('.tag-container').click(focusOnInput);
 
-                const tempButton = document.querySelector('.NzPR9b').firstElementChild;
-                tempButton.addEventListener('click', AddHTMLCard, false);
+                    document.addEventListener('click', deleteTagCheck, false); // ???? 
+
+                    $('#Edit').click(editChoice);
+                    $('#Delete').click(deleteChoice);
+
+                    $('.r6xAKc:nth(1)').click(AddHTMLCard);
+
+                    updateCards();
             }
         }
     );
@@ -74,31 +70,26 @@ function initialize() {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     console.log (request);
     switch(request.data) {
+        case 'translate': {
+            updateCards();
+            break;
+        }
         case 'add-class': {
-            document.getElementById('card1').style.visibility = 'visible';
+            $('#card1').css({visibility: 'visible'});
             break;
         }
         case 'edit-class': {
-            document.getElementById('card2').style.visibility = 'visible';
-
-            updateChoiceBox();
-            document.getElementById('Okay-2').className = "";
-            document.getElementById('Okay-2').classList.add('Edit');
-            document.getElementById('Okay-2').innerText = "Edit";
+            $('#card2').css({visibility: 'visible'});
+            updateChoiceBox('card2');
             break;
         }
         case 'del-class': {
-            document.getElementById('card2').style.visibility = 'visible';
-
-            updateChoiceBox();
-            document.getElementById('Okay-2').className = "";
-            document.getElementById('Okay-2').classList.add('Delete');
-            document.getElementById('Okay-2').innerText = "Delete";
+            $('#card3').css({visibility: 'visible'});
+            updateChoiceBox('card3');
             break;
         }
     }
 });
-
 
 function twod(v) {
     return ('0'+Number(v)).slice(-2);
@@ -107,41 +98,28 @@ function toMinutes(time) { // time is string example: "10:43"
     return Number(time.substring(0, 2)) * 60 + Number(time.substring(3));
 }
 function getCurrentTime() {
-    let now = new Date(), ctime = now.getHours() + ':' + twod( now.getMinutes() );
-    return ctime;
+    let now = new Date();
+    return twod(now.getHours()) + ':' + twod(now.getMinutes());
 }
 
 
 function choosenClass(classes) {
-    let select = document.querySelector('.class-choice');
-    return getIndexOfClassById(select.options[select.selectedIndex].value, classes);
+    let select_value = $('.class-choice').find(":selected").val();
+    return getIndexOfClassById(select_value, classes);
 }
 
 // Save names and times when student entered to array 'joined' in chrome 
 function storeNames(names) {
     let ctime = getCurrentTime();
 
-    let joined = [];
-    let oldjoined = JSON.parse(sessionStorage.getItem('joined'));
-    console.log(oldjoined);
+    let joined = JSON.parse(sessionStorage.getItem('joined'));
+    console.log(joined, names);
+
     for (let i=0; i<names.length; i++) {
-        let flag = -1;
-        oldjoined.forEach((student, j) => {
-            if (student.name == names[i])
-                flag = j;
-        });
-        if (flag == -1) {
-            joined.push({
-                'name': names[i],
-                'time': ctime
-            });
-        } else {
-            joined.push(oldjoined[flag]);
-        }
+        if (joined.hasOwnProperty(names[i])) continue;
+        joined[names[i]] = ctime;
     }
     sessionStorage.setItem('joined', JSON.stringify(joined));
-
-    // console.log(JSON.parse(sessionStorage.getItem('joined')));
 }
 
 function updateOverwrite(data, callback) {
@@ -156,22 +134,24 @@ function updateOverwrite(data, callback) {
 }
 
 function createAttendance() {
-    let select = document.querySelector('.class-choice');
-    let sortTime = document.querySelector('.show-choice');
-    let choosenTime = document.querySelector('.class-start-time').value;
+    let select = $('.class-choice');
+    let selectedIndex = select.prop('selectedIndex');
 
-    if (select.selectedIndex == -1) return;
-    savedIndexSelectedClass = select.selectedIndex;
+    if (selectedIndex == -1) return;
+
+    let choosenTime = $('.class-start-time').val();
+    let selectedTime = $('.show-choice').prop('selectedIndex');
+
+    savedIndexSelectedClass = selectedIndex + 1;
     savedTimeChoosenStartTime = choosenTime;
+    choosenTime = toMinutes(choosenTime);
 
-    let selectedTime = sortTime.options[sortTime.selectedIndex].text;
-
-    let ul = document.querySelector('.list-students');
-    ul.innerHTML = "";
+    var $ul = $('.list-students');
+    $ul.html('');
 
     joined = JSON.parse(sessionStorage.getItem('joined'));
     console.log(joined);
-    chrome.storage.sync.get(['classes'], function(request) {
+    chrome.storage.sync.get(['classes', 'lang'], function(request) {
         let classes = request.classes;
         let index = choosenClass(classes);
         
@@ -179,10 +159,10 @@ function createAttendance() {
             classes[index].students[i].marked = false;
 
         // Add Early and Late students to the list
-        joined.forEach((student) => {
+        for (let [name, time] of Object.entries(joined)) {
             let flag = -1;
-            classes[index].students.forEach((std, idx) => {
-                if (std.name == student.name)
+            classes[index].students.forEach((student, idx) => {
+                if (student.name == name)
                     flag = idx;
             });
 
@@ -190,14 +170,94 @@ function createAttendance() {
             if (flag != -1 && !classes[index].students[flag].marked) {
                 classes[index].students[flag].marked = true;
 
-                let li = document.createElement('li');
-                li.setAttribute('class', 'student');
-                let name = document.createElement('p');
-                name.innerText = student.name;
+                console.log(selectedTime, classes[index].students[flag])
 
-                let button = document.createElement('button');
-                button.id = ('' + index) + '|' + ('' + flag);
-                button.addEventListener('click', function() {
+                let buttonText = '', buttonLabel = '';
+                let overwrite = classes[index].students[flag].overwrite;
+                let stime = toMinutes(time); // student time in minutes
+
+                switch (selectedTime) {
+                    case 0: {
+                        switch (overwrite) {
+                            case false: {
+                                if (stime <= choosenTime) {
+                                    buttonText = '🟢' // green
+                                    buttonLabel = 'Early';
+                                }
+                                else {
+                                    buttonText = '🟡' // yellow
+                                    buttonLabel = 'Late';
+                                }
+                                break;
+                            }
+                            default: {
+                                buttonText = classes[index].students[flag].overwrite;
+                                if (classes[index].students[flag].overwrite == '🟢')
+                                    buttonLabel = 'Early';
+                                else
+                                    buttonLabel = 'Late';
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case 1: { // green
+                        switch (overwrite) {
+                            case false: {
+                                if (stime <= choosenTime) {
+                                    buttonText = '🟢';
+                                    buttonLabel = (request.lang == 'en')?'Early':'Ранний';
+                                }
+                                else
+                                    return;
+                                break;
+                            }
+                            case '🟢': {
+                                buttonText = '🟢';
+                                buttonLabel = (request.lang == 'en')?'Early':'Ранний';
+                                break;
+                            }
+                            default: {
+                                return;
+                            }
+                        }
+                        break;
+                    }
+                    case 2: { // yellow
+                        switch (overwrite) {
+                            case false: {
+                                if (stime > choosenTime) {
+                                    buttonText = '🟡';
+                                    buttonLabel = (request.lang == 'en')?'Late':'Опоздавший';
+                                }
+                                else
+                                    return;
+                                break;
+                            }
+                            case '🟡': {
+                                buttonText = '🟡';
+                                buttonLabel = (request.lang == 'en')?'Late':'Опоздавший';
+                                break;
+                            }
+                            default: {
+                                return;
+                            }
+                        }
+                        break;
+                    }
+                    case 3: {
+                        return;
+                    }
+                }
+
+                let $text = $(document.createElement('p'));
+                let $button = $(document.createElement('button'));
+
+                $text.prop({innerText: `${name} (${time})`});
+                
+                $button.prop({id: `${index}|${flag}`, innerText: buttonText});
+                $button.attr({label: buttonLabel});
+                $button.click(function() {
                     const colors = ['🟢', '🟡']; // green, yellow
                     for (let i=0; i<2; i++) 
                         if (this.innerText == colors[i]) {
@@ -210,93 +270,25 @@ function createAttendance() {
                             'https://meet.google.com');
                             break;
                         }
-                }, false);
-                console.log(selectedTime, classes[index].students[flag])
-                switch (selectedTime) {
-                    case 'All': {
-                        switch (classes[index].students[flag].overwrite) {
-                            case false: {
-                                if (toMinutes(student.time) <= toMinutes(choosenTime))
-                                    button.innerText = '🟢' // green
-                                else
-                                    button.innerText = '🟡' // yellow
-                                break;
-                            }
-                            default: {
-                                button.innerText = classes[index].students[flag].overwrite;
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                    case 'Early 🟢': { // green
-                        switch (classes[index].students[flag].overwrite) {
-                            case false: {
-                                if (toMinutes(student.time) <= toMinutes(choosenTime))
-                                    button.innerText = '🟢';
-                                else
-                                    return;
-                                break;
-                            }
-                            case '🟢': {
-                                button.innerText = '🟢';
-                                break;
-                            }
-                            default: {
-                                return;
-                            }
-                        }
-                        break;
-                    }
-                    case 'Late 🟡': { // yellow
-                        switch (classes[index].students[flag].overwrite) {
-                            case false: {
-                                if (toMinutes(student.time) > toMinutes(choosenTime))
-                                    button.innerText = '🟡';
-                                else
-                                    return;
-                                break;
-                            }
-                            case '🟡': {
-                                button.innerText = '🟡';
-                                break;
-                            }
-                            default: {
-                                return;
-                            }
-                        }
-                        break;
-                    }
-                    case 'Gone 🔴': {
-                        return;
-                    }
-                }
-                
-                li.appendChild(button);
-                li.appendChild(name);
-                
-
-                ul.appendChild(li);
+                });
+                $ul.append($(`<li class="student"></li>`).append($button).append($text));
             }
-        });
+        }
 
         //Add Gone students to the list
-        if (selectedTime == 'All' || selectedTime == 'Gone 🔴')
+        if (selectedTime == 0 || selectedTime == 3)
             classes[index].students.forEach((student, flag) => {
                 if (!student.marked) {
                     student.overwrite = false;
-                    let li = document.createElement('li');
-                    li.setAttribute('class', 'student');
-                    let name = document.createElement('p');
-                    name.innerText = student.name;
 
-                    let button = document.createElement('button');
-                    button.innerText = '🔴'; // red
+                    let $text = $(document.createElement('p'));
+                    let $button = $(document.createElement('button'));
 
-                    li.appendChild(button);
-                    li.appendChild(name);
-
-                    ul.appendChild(li);
+                    $text.prop({innerText: `${student.name}`});
+                    
+                    $button.prop({id: `${index}|${flag}`, innerText: '🔴'});
+                    $button.attr({label: (request.lang == 'en')?'Gone':'Отсутствующий'});
+                    $ul.append($(`<li class="student"></li>`).append($button).append($text));
                 }
             });
 

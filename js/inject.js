@@ -1,21 +1,31 @@
 ;(function () {
     let dataPath = []
     let arrayKey = null
-    const regex = /function\(\){_\.[a-zA-Z0-9$_]+\.prototype\.[a-zA-Z0-9$_]+\.call\(this\);[a-zA-Z0-9$_]+\(this\)}/
+
+    const regex1 = /function\(\){_\.[a-zA-Z0-9$_]{2,3}\.prototype\.[a-zA-Z0-9$_]{2,3}\.call\(this\);[a-zA-Z0-9$_]{2,3}\(this\)}/
+    const regex2 = /[a-zA-Z0-9$_]{2,3}\(\){super\.[a-zA-Z0-9$_]{2,3}\(\);[a-zA-Z0-9$_]{2,3}\(this\)}/
+    const nameRegex = /(\(|\[)([^\(\[\)\]]+)(\)|\])/
 
     const finder = setInterval(attemptHook, 1)
 
     function attemptHook() {
         log(`Attempting hook...`)
-        outer: for (const [_k, v] of Object.entries(
-            window.default_MeetingsUi
-        )) {
+        outer: for (const _k in window.default_MeetingsUi) {
+            const v = window.default_MeetingsUi[_k]
             if (v && v.prototype) {
-                for (const k of Object.keys(v.prototype)) {
+                for (const k of Object.getOwnPropertyNames(v.prototype)) {
                     const p = Object.getOwnPropertyDescriptor(v.prototype, k)
-                    if (p && p.value && !v.prototype[k].__grid_ran) {
+                    if (
+                        k !== 'constructor' &&
+                        p &&
+                        p.value &&
+                        !v.prototype[k].__grid_ran
+                    ) {
                         let funcString = p.value.toString()
-                        if (regex.test(funcString)) {
+                        if (
+                            regex1.test(funcString) ||
+                            regex2.test(funcString)
+                        ) {
                             const og = v.prototype[k]
                             v.prototype[k] = function () {
                                 window.dispatchEvent(
@@ -75,7 +85,7 @@
                                                         ) {
                                                             arrayKey = k___
                                                             log(
-                                                                'Found path to participant data.'
+                                                                `Found path to participant data at {source}.${___k}.${__k}.${_k}.${k}.${k_}.data.{id}.${k___}.`
                                                             )
                                                             break outer
                                                         }
@@ -96,8 +106,6 @@
         )[dataPath[4]][dataPath[5]]
 
         let names = []
-        console.log(data)
-        const regex = /(\(|\[)([^\(\[\)\]]+)(\)|\])/
         for (const v of Object.values(data)) {
             const array = v[arrayKey]
             if (array[4] && array[6].length === 0 && array[20] == undefined) {
@@ -110,12 +118,12 @@
                     firstName = array[28]
                     lastName = fullName.replace(firstName, '')
                 }
-                firstName = firstName.replace(regex, '').trim()
-                lastName = lastName.replace(regex, '').trim()
+                firstName = firstName.replace(nameRegex, '').trim()
+                lastName = lastName.replace(nameRegex, '').trim()
                 names.push(firstName + ' ' + lastName)
-                console.log("entering")
             }
         }
+
         window.postMessage(
             {
                 attendance: names,

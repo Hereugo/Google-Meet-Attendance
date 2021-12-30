@@ -11,9 +11,5 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		    });
 		    return true;
     	}
-    	case "check": {
-    		sendResponse("FINALLY!");
-    		return true;
-    	}
     }
 });

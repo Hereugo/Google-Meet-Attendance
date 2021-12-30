@@ -1,6 +1,12 @@
 :root {
-    --tag-font-size: 14px;
+    --font-size: 14px;
+    --theme-color: #1a73e8;
+    --darker-theme-color: #174ea6;
+    --error-color: #c5221f;
+    --light-grey: #ccc;
+    --grey: #5f6368;
 }
+
 .background-shadow {
     z-index: 101;
     background: rgba(0,0,0,.4);
@@ -27,10 +33,10 @@
     border-radius: 5px;
 }
 .tag-container {
-    border: solid 2px #00796b;
+    border: 1px solid var(--theme-color);
     border-radius: 3px;
     background-color: white;
-    background: #fff;
+    background: white;
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
@@ -41,42 +47,43 @@
     overflow-y: auto;
     flex: 1 1 auto;
 }
-.tag-container :hover {
-    background: #C0C0C0;
-}
 .tag {
-    font-size: var(--tag-font-size);
+    font-size: var(--font-size);
     margin: 2.5px;
     padding: 3px 3px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--light-grey);
     border-radius: 3px;
-    background: #eee;
+    background: transparent;
     display: flex;
     align-items: center;
     color: #333;
     cursor: default;
 }
 .tag i {
-    font-size: var(--tag-font-size);
+    font-size: var(--font-size);
     color: #666;
-    margin-left: 5px;
+    margin-left: 0.5em;
+}
+.tag i:hover .tag {
+    border: 1px solid var(--grey);
 }
 #tag-input {
     padding: 5px;
-    font-size: var(--tag-font-size);
+    font-size: var(--font-size);
     border: 0;
     outline: none;
-    background: #fff !important;
+    background: white !important;
     font-family: 'Google Sans';
-    color: #333;
+    color: var(--grey);
     flex: 1;
     height: auto;
 }
 .buttons {
     display: flex;
-    flex-direction: row;
     justify-content: flex-end;
-    padding: 0 0.5em 0.5em 0;
+
+    padding-right: 0.5em;
+    padding-bottom: 0.5em;
 }
 .new-class-name {
     margin: 0.5em 1em;
@@ -86,7 +93,7 @@
 }
 .show-block p {
     font-weight: 500;
-    font-size: 14px;
+    font-size: var(--font-size);
     letter-spacing: 1px;
     width: 100px;
 }
@@ -97,26 +104,30 @@
 }
 .class-name {
     background-color: white;
-    font-size: 14px;
+    font-size: var(--font-size);
     padding: 0.3em 0.2em;
-    border: solid 2px gray;
+    border: 1px solid var(--grey);
     border-radius: 5px;
+}
+.class-name:hover {
+    border: 1px solid black;
+    /*background-color: black;*/
 }
 .class-start-time {
     background-color: white;
     font-size: 14px;
     margin-left: 2px; 
     padding: 0.3em 0.2em;
-    border: solid 2px gray;
+    border: solid 1px var(--grey);
     border-radius: 5px;
 }
-#Cancel {
+.Cancel {
     font-weight: 600;
-    color: #00796b;
+    color: var(--theme-color);
     letter-spacing: 1.5px;
     font-family: inherit;
     padding: 0.5em 1em;
-    border: solid 2px gray;
+    border: 1px solid var(--grey);
     background: white;
     text-transform: uppercase;
 }
@@ -126,18 +137,18 @@
     letter-spacing: 1.5px;
     font-family: inherit;
     padding: 0.5em 1em;
-    background: #00796b;
+    background: var(--theme-color);
     margin-left: 1em; 
     border: none;
     text-transform: uppercase;
 }
 #ICP {
     font-weight: 600;
-    color: #00796b;
+    color: var(--theme-color);
     letter-spacing: 1.5px;
     font-family: inherit;
     padding: 0.5em 1em;
-    border: solid 2px gray;
+    border: 1px solid var(--grey);
     margin: 0 0.5em;
     background: white;
     text-transform: uppercase;
@@ -238,52 +249,43 @@
     padding: 0.25em 1em;
 }
 
-#Cancel-2 {
-    border: solid 2px gray;
-    font-weight: 600;
-    font-family: inherit;
-    color: #00796b;
-    letter-spacing: 1.5px;
-    padding: 0.5em 1em;
-    background: white;
-    text-transform: uppercase;
-}
-.Edit {
+#Edit {
     font-weight: 600;
     color: white;
     letter-spacing: 1.5px;
     font-family: inherit;
     padding: 0.5em 1em;
-    background: #00796b;
+    background: var(--theme-color);
     margin-left: 1em; 
     border: none;
     text-transform: uppercase;
 }
-.Delete {
+#Delete {
     font-weight: 600;
     color: white;
     letter-spacing: 1.5px;
     font-family: inherit;
     padding: 0.5em 1em;
-    background: #c5221f;
+    background: var(--error-color);
     margin-left: 1em; 
     border: none;
     text-transform: uppercase;
 }
 
 .save-button {
-    border: solid 2px gray;
+    border: solid 1px var(--grey);
     font-weight: 600;
     font-family: inherit;
-    color: #00796b;
+    color: var(--theme-color);
     letter-spacing: 1.5px;
     padding: 0.5em 1em;
     background: white;
     float: right;
     text-transform: uppercase;
 }
-
-
-#Cancel:hover, #Cancel-2:hover, #Ok:hover, #Okay-2:hover, #ICP:hover, .save-button:hover {
+.card {
+    visibility: hidden;
+}
+.hover-state:hover {
     filter: brightness(90%);
 }

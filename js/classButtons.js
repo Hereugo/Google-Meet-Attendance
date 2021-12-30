@@ -1,12 +1,16 @@
-function clearNewClass() {
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function clearCards() {
 	clearTags();
-	document.querySelector('.class-name').value = "";
-	document.querySelector('#tag-input').value = "";
+	$('.class-name').val("");
+	$('#tag-input').val("");
 	tags = [];
 }
+
 function createNewClass() {
-	
-	let className = document.querySelector('.class-name').value;
+	let className = $('.class-name').val();
 	let students = [];
 	for (let i=0; i<tags.length; i++) {
 		students.push({
@@ -16,8 +20,8 @@ function createNewClass() {
 		});
 	}
 
-	clearNewClass();
-	document.getElementById('card1').style.visibility = 'hidden';
+	clearCards();
+	$('#card1').css({visibility: 'hidden'});
 
 	let cls = {
 		'name': className,
@@ -28,13 +32,24 @@ function createNewClass() {
 	chrome.storage.sync.get(['classes'], function (result) {
 		classes = result.classes;
 		classes.push(cls);
+		if (fromEdit != -1) {
+			classes.splice(getIndexOfClassById(fromEdit, classes), 1);
+			fromEdit = -1;
+		}
 		chrome.storage.sync.set({'classes': classes}, null);
 	});
 }
-function cancelNewClass() {
-	clearNewClass();
-	document.getElementById('card1').style.visibility = 'hidden';
+function getParent(count, element) {
+	if (count == 0) return element;
+	return getParent(count-1, element.parentNode);
 }
+
+function cancelCard() {
+	clearCards();
+	let card = getParent(3, this);
+	card.style.visibility = 'hidden';
+}
+
 
 function getIndexOfClassById(id, classes) {
     for (let i=0; i<classes.length; i++)
@@ -44,42 +59,60 @@ function getIndexOfClassById(id, classes) {
 }
 
 function updateSelectClassChoice(callback) {
-    let select = document.querySelector('.class-choice');
+    let select = $('.class-choice');
     chrome.storage.sync.get(['classes'], function (result) {
 		if (result.classes !== undefined) {
 			result.classes.forEach((cls) => {
-				var option = document.createElement("option");
-				option.text = cls.name;
-				option.value = cls.id;
-				select.add(option);
+				var option = $(document.createElement("option"));
+				option.prop({innerText: cls.name, value: cls.id});
+				select.append(option);
 			});
 		}
 		callback(true);
 	});
 }
 
-function AddHTMLCard() {
-    const infoOnMeet = document.getElementsByClassName('ggUFBf')[1];
-    infoOnMeet.insertAdjacentHTML('afterbegin', cardHTML2);
+async function AddHTMLCard() {
+	await sleep(300);
+    const infoOnMeet = $('.ggUFBf:nth(1)');
+    infoOnMeet.prepend(attendanceHTML);
+    
+    //Language thingy--------
+    chrome.storage.sync.get(['lang'], function(response) {
+    	let currentLang = response.lang;
+	    
+	    $('.card-title-2').text(meetLanguage[currentLang]['attendanceHTML']['card_title_2']);
+	    $('.class-choice-name').text(meetLanguage[currentLang]['attendanceHTML']['class_choice_name']);
+	    $('.show-choice-name').text(meetLanguage[currentLang]['attendanceHTML']['show_choice_name']);
 
+	    meetLanguage[currentLang]['attendanceHTML']['show_choice'].forEach((elm)=> {
+	    	let option = $(document.createElement('option')).text(elm);
+	    	$('.show-choice').append(option);
+	    });
+	    $('.class-start-time-name').text(meetLanguage[currentLang]['attendanceHTML']['class_start_time_name']);
+	    $('.save-button').text(meetLanguage[currentLang]['attendanceHTML']['save_button']);
+    });
+    //------------------------
+
+
+
+   	//// JQUERY TODO STOPPED 00:04 AM OOF 
     updateSelectClassChoice(function(ifAdded) {
-    	let select = document.querySelector('.class-choice');
-    	let sortTime = document.querySelector('.show-choice');
-
-    	let op1 = select.options[savedIndexSelectedClass];
-    	if (op1 != null) op1.selected = true;
+    	let option = $(`.class-choice option:nth-child(${savedIndexSelectedClass})`);
+    	if (option != undefined) option.attr({selected: true});
 
     	if (ifAdded) createAttendance();
     });
-    document.querySelector('.class-start-time').value = savedTimeChoosenStartTime;
+    $('.class-start-time').val(savedTimeChoosenStartTime);
+    $('.save-button').click(exportAttendance);
 
-    document.querySelector('.class-choice').onchange = sendFillClassList;
-    document.querySelector('.show-choice').onchange = sendFillClassList;
-    document.querySelector('.class-start-time').onchange = sendFillClassList;
+    $('.class-choice').change(sendFillClassList);
+    $('.show-choice').change(sendFillClassList);
+    $('.class-start-time').change(sendFillClassList);
 
     if (updatedObserver === undefined) {
-	    updatedObserver = new MutationObserver(function(mutation) {
-	        AddHTMLCard();
+	    updatedObserver = new MutationObserver(async function(mutation) {
+	        await AddHTMLCard();
 	    });
 	    updatedObserver.observe(document.querySelector('.GvcuGe'), {
 	        childList: true,
@@ -95,29 +128,20 @@ function sendFillClassList() {
 		'https://meet.google.com');
 }
 
-
-
-
-function cancelChoice() {
-    document.getElementById('card2').style.visibility = 'hidden';
+function editChoice() {
+	let select_value = $('#card2 .choose-2').find(":selected").val();
+	editClass(select_value);
+	$('#card2').css({visibility: 'hidden'});
 }
-function OkChoice() {
-	let select = document.querySelector('.choose-2');
-	switch(document.getElementById('Okay-2').innerText) {
-		case 'EDIT': {
-			editClass(select.options[select.selectedIndex].value);
-			break;
-		}
-		case 'DELETE': {
-			deleteClass(select.options[select.selectedIndex].value);
-			break;
-		}
-	}
-	document.getElementById('card2').style.visibility = 'hidden';
+function deleteChoice() {
+	let select_value = $('#card3 .choose-2').find(":selected").val();
+	deleteClass(select_value);
+	$('#card3').css({visibility: 'hidden'});
 }
+
 
 function addClass() {
-    document.getElementById('card1').style.visibility = 'visible';
+    $('#card1').css({visibility: 'visible'});
 }
 function deleteClass(id) {
     chrome.storage.sync.get(['classes'], function (request) {
@@ -128,45 +152,90 @@ function deleteClass(id) {
     });
 }
 function editClass(id) {
-	document.getElementById('card1').style.visibility = 'visible';
+	
+	$('#card1').css({visibility: 'visible'});
+
+	updateCards();
     chrome.storage.sync.get(['classes'], function (request) {
         let classes = request.classes;
         
         let i = getIndexOfClassById(id, classes);
-        
+        fromEdit = id;
         classes[i].students.forEach((student) => {
             tags.push(student.name);
         });
         addTags();
-        document.querySelector('.class-name').value = classes[i].name;
+        $('.class-name').val(classes[i].name);
     });
 }
-function updateChoiceBox() {
-	let select = document.querySelector('.choose-2');
-	select.innerText = null;
+function updateChoiceBox(elemName) {
+	let select = $(`#${elemName} .choose-2`);
+	select.html('');
 	
 	function fixasync(callback) {
 		chrome.storage.sync.get(['classes'], function (result) {
 			if (result.classes !== undefined) {
 				result.classes.forEach((cls) => {
-					var option = document.createElement("option");
-					option.text = cls.name;
-					option.value = cls.id;
-					select.add(option);
+					var option = $(document.createElement("option"));
+					option.prop({innerText: cls.name, value: cls.id});
+					select.append(option);
 				});
 				callback(true);
 			}
 		});
 	}
 	fixasync(function(ye) {
-		if (ye) {select.selectedIndex = 0;}
+		if (ye) select.prop({selectedIndex: 0});
 	});
 }
 
 function injectCurrentParticipants() {
 	joined = JSON.parse(sessionStorage.getItem('joined'));
-	joined.forEach((student) => {
-		tags.push(student.name);
-	});
+
+	for (let [name, time] of Object.entries(joined)) {
+		let no = false;
+		for (let i=0; i<tags.length; i++)
+			if (tags[i] == name) {
+				no = true;
+				break;
+			}
+		if (!no) tags.push(name);
+	}
 	addTags();
+}
+
+function getCurrentDateFormat() {
+	let today = new Date();
+	let dd = String(today.getDate()).padStart(2, '0');
+	let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	let yyyy = today.getFullYear();
+
+	return mm + '/' + dd + '/' + yyyy;
+}
+
+function exportAttendance() {
+	let text = "";
+	let listName = $('.student p');
+	let listTime = $('.student button');
+	console.log(listName, listTime);
+	for (let i=0; i<listName.length; i++) {
+		text += `${listTime[i].innerText} ${listName[i].innerText}\n`;
+	}
+
+	console.log(text);
+
+	let filename = `${$('.class-choice').find(":selected").text()}-${$('.show-choice').find(':selected').text()}-${getCurrentDateFormat()}.txt`;
+
+	console.log(filename);
+
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
 }
