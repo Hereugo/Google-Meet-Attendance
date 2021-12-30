@@ -1,0 +1,23 @@
+{
+	"name": "Google Meet Attendance",
+	"version": "1.0",
+	"description": "Monitor who attendant your class using this extension",
+	"background": {
+		"scripts": ["js/listeners.js"],
+		"persistent": false
+	},
+	"web_accessible_resources": ["js/inject.js"],
+	"content_scripts": [
+		{
+			"matches": ["*://meet.google.com/**-**-**"],
+			"js": ["js/contentScript.js", "js/classButtons.js", "js/tagbox-logic.js", "js/html-templates.js"],
+			"css": ["css/style.css"]
+		}
+	],
+	"permissions": ["storage"],
+	"browser_action": {
+		"default_icon": "img/Google meet attendance icon.png",
+		"default_popup": "html/popup.html"
+	},
+	"manifest_version": 2
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .popup-container {
+        width: 120px;
+        height: 120px;
+        font-family: 'Open Sans';
+        padding: 1em 0.5em;
+      }
+      .popup-name {
+        text-align: center;
+        letter-spacing: 1.5px;
+        font-weight: 400;
+        margin: 0;
+      }
+      .buttons {
+        display: flex;
+        flex-direction: column;
+      }
+      .popup-container button {
+        font-family: 'Open Sans';
+        font-size: 14px;
+        padding: 0.3em 0.2em;
+        margin-top: 0.2em;
+        border: none;
+        border-radius: 10px;
+      }
+      .popup-add-class {
+        background: #00796b;
+        color: white;
+      }
+      .popup-del-class {
+        background: #c5221f;
+        color: white;
+      }
+      .separator {
+        border-top: 1px solid rgba(0,0,0,0.12);
+        margin: 7px 0;
+      }
+      .popup-add-class:hover, .popup-edit-class:hover, .popup-del-class:hover {
+        filter: brightness(90%); 
+      }
+    </style>
+  </head>
+  <body>
+    <div class="popup-container">
+      <h2 class="popup-name"> Class </h2>
+      <div class="separator"></div> 
+      <div class="buttons"> 
+        <button class="popup-add-class">Add Class</button>
+        <button class="popup-edit-class">Edit Class</button>
+        <button class="popup-del-class">Delete Class</button>
+      </div>
+    </div>
+  </body>
+
+  <script src="../js/popup.js"></script>
+</html>

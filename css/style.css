@@ -1,0 +1,289 @@
+:root {
+    --tag-font-size: 14px;
+}
+.background-shadow {
+    z-index: 101;
+    background: rgba(0,0,0,.4);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+.show-block {
+    background-color: white;
+    position: relative;
+
+    display: flex;
+
+    vertical-align: center;
+    flex-direction: column;
+    align-content: flex-start;
+    font-family: "Google Sans";
+    margin:auto;
+    z-index: 102;
+
+    width: 60%;
+    height: auto;
+
+    border-radius: 5px;
+}
+.tag-container {
+    border: solid 2px #00796b;
+    border-radius: 3px;
+    background-color: white;
+    background: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    padding: 3px;
+    margin: 0px 0.5em 8px 0.5em;
+    min-height: 177px;
+    max-height: 186px;
+    overflow-y: auto;
+    flex: 1 1 auto;
+}
+.tag-container :hover {
+    background: #C0C0C0;
+}
+.tag {
+    font-size: var(--tag-font-size);
+    margin: 2.5px;
+    padding: 3px 3px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: #eee;
+    display: flex;
+    align-items: center;
+    color: #333;
+    cursor: default;
+}
+.tag i {
+    font-size: var(--tag-font-size);
+    color: #666;
+    margin-left: 5px;
+}
+#tag-input {
+    padding: 5px;
+    font-size: var(--tag-font-size);
+    border: 0;
+    outline: none;
+    background: #fff !important;
+    font-family: 'Google Sans';
+    color: #333;
+    flex: 1;
+    height: auto;
+}
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 0 0.5em 0.5em 0;
+}
+.new-class-name {
+    margin: 0.5em 1em;
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: 0.75px;
+}
+.show-block p {
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 1px;
+    width: 100px;
+}
+.student-names {
+    font-family: 'Google Sans';
+    margin: 0.25em 0.5em;
+    font-weight: 500;
+}
+.class-name {
+    background-color: white;
+    font-size: 14px;
+    padding: 0.3em 0.2em;
+    border: solid 2px gray;
+    border-radius: 5px;
+}
+.class-start-time {
+    background-color: white;
+    font-size: 14px;
+    margin-left: 2px; 
+    padding: 0.3em 0.2em;
+    border: solid 2px gray;
+    border-radius: 5px;
+}
+#Cancel {
+    font-weight: 600;
+    color: #00796b;
+    letter-spacing: 1.5px;
+    font-family: inherit;
+    padding: 0.5em 1em;
+    border: solid 2px gray;
+    background: white;
+    text-transform: uppercase;
+}
+#Ok {
+    font-weight: 600;
+    color: white;
+    letter-spacing: 1.5px;
+    font-family: inherit;
+    padding: 0.5em 1em;
+    background: #00796b;
+    margin-left: 1em; 
+    border: none;
+    text-transform: uppercase;
+}
+#ICP {
+    font-weight: 600;
+    color: #00796b;
+    letter-spacing: 1.5px;
+    font-family: inherit;
+    padding: 0.5em 1em;
+    border: solid 2px gray;
+    margin: 0 0.5em;
+    background: white;
+    text-transform: uppercase;
+}
+.separator {
+    border-top: 1px solid rgba(0,0,0,0.12);
+    margin: 7px 0;
+}
+
+.container {
+    width: 312px;
+    max-width: 360px;
+    padding: 0px 24px;
+    margin: 12px 0px;
+    font-family: "Google Sans";
+    font-size: 14px;
+}
+.container select {
+    background-color: white;
+    padding: 0.3em 0.2em;
+    font-family: 'Google Sans';
+    font-size: 14px;
+    border-radius: 7%;
+    margin-right: auto; 
+}
+.list-container {
+    width: auto;
+    height: auto;
+}
+.list-students {
+    margin: 0;
+    list-style-type: none;
+    padding: 0;
+}
+
+.student {
+    background-color: white;
+    margin: 0 0 8px 0.5em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.student p {
+    margin: 0;
+}
+.student ul {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+}
+.student ul{
+    margin-left: auto;
+}
+.student button {
+    padding: 6px;
+    border: none;
+    background-color: white;
+    font-size: 16.5px;
+}
+.settings {
+    display: flex;
+    flex-direction: column;
+}
+
+.show-block-2 {
+    background-color: white;
+    position: relative;
+
+    display: flex;
+
+    vertical-align: center;
+    flex-direction: column;
+    align-content: flex-start;
+    font-family: 'Google Sans';
+    margin:auto;
+    z-index: 102;
+
+    width: 25%;
+    max-height: 50%;
+
+    border-radius: 5px;
+}
+.name-2 {
+    margin: 0.5em 1em;
+    text-align: center;
+    font-weight: 400;
+    font-size: 20px;
+    letter-spacing: 0.75px;
+}
+.choose-2 {
+    height: 100%;
+    overflow-y: auto;
+}
+.choose-2 option {
+    text-align: center;
+    font-family: 'Google sans';
+    font-size: 14px;
+    padding: 0.25em 1em;
+}
+
+#Cancel-2 {
+    border: solid 2px gray;
+    font-weight: 600;
+    font-family: inherit;
+    color: #00796b;
+    letter-spacing: 1.5px;
+    padding: 0.5em 1em;
+    background: white;
+    text-transform: uppercase;
+}
+.Edit {
+    font-weight: 600;
+    color: white;
+    letter-spacing: 1.5px;
+    font-family: inherit;
+    padding: 0.5em 1em;
+    background: #00796b;
+    margin-left: 1em; 
+    border: none;
+    text-transform: uppercase;
+}
+.Delete {
+    font-weight: 600;
+    color: white;
+    letter-spacing: 1.5px;
+    font-family: inherit;
+    padding: 0.5em 1em;
+    background: #c5221f;
+    margin-left: 1em; 
+    border: none;
+    text-transform: uppercase;
+}
+
+.save-button {
+    border: solid 2px gray;
+    font-weight: 600;
+    font-family: inherit;
+    color: #00796b;
+    letter-spacing: 1.5px;
+    padding: 0.5em 1em;
+    background: white;
+    float: right;
+    text-transform: uppercase;
+}
+
+
+#Cancel:hover, #Cancel-2:hover, #Ok:hover, #Okay-2:hover, #ICP:hover, .save-button:hover {
+    filter: brightness(90%);
+}
