@@ -1,87 +1,75 @@
-const meetLanguage = {
-	en: {
-		popup: {
-			popup_name: 'Class',
-			popup_add_class: 'Add Class',
-			popup_edit_class: 'Edit Class',
-			popup_del_class: 'Delete Class',
-			language: 'Language',
-			link: 'https://www.youtube.com/watch?v=xhnKGd76ZOg',
-		},
-		classHTML: {
-			new_class_name: 'New Class',
-			input_name_class_name: 'Class name',
-			student_names: 'Student names',
-			ICP: 'Add all current students', // ICP - "Inject current participants"
-			Cancel: 'Cancel',
-			Ok: 'Save',
-		},
-		attendanceHTML: {
-			card_title_2: 'Attendance',
-			class_choice_name: 'Class:',
-			show_choice_name: 'Sort:',
-			show_choice: ['All', 'Early 🟢', 'Late 🟡', 'Gone 🔴'],
-			class_start_time_name: 'Period start:',
-			save_button: 'Export',
-		},
-		updateHTML: {
-			name_2: 'Select Class',
-			Cancel_2: 'Cancel',
-			Edit: 'Edit',
-			Delete: 'Delete'
-		}
+const translations = {
+	"en": {
+		"add-card-title": "New Class",
+		"add-class-name": "Class name",
+		"add-tag-container-label": "Student names",
+		"add-all-students": "Add All Students",
+		
+		"select-card-title": "Select Class",
+
+		"cancel-button": "Cancel",
+		"add-button": "Add",
+		"edit-button": "Edit",
+		"delete-button": "Delete",
+
+		"attendance-card-title": "Attendance",
+		"attendance-class-list": "Class:",
+		"attendance-filter-list": "Filter:",
+
+		"attendance-select-filter-all": "All",
+		"attendance-select-filter-early": "Early 🟢",
+		"attendance-select-filter-late": "Late 🟡",
+		"attendance-select-filter-gone": "Gone 🔴",
+
+		"period-time": "Period:",
+		"export-button": "Export",
 	},
-	ru: {
-		popup: {
-			popup_name: 'Класс',
-			popup_add_class: 'Добавить Класс',
-			popup_edit_class: 'Изменить Класс',
-			popup_del_class: 'Удалить Класс',
-			language: 'Язык',
-			link: 'https://www.youtube.com/watch?v=VyXnD_9f6Kg'
-		},
-		classHTML: {
-			new_class_name: 'Новый Класс',
-			input_name_class_name: 'Имя класса',
-			student_names: 'Имя участников',
-			ICP: 'Добавить всех нынешних учеников',
-			Cancel: 'Отменить',
-			Ok: 'Сохранить',
-		},
-		attendanceHTML: {
-			card_title_2: 'Посещаемость',
-			class_choice_name: 'Класс:',
-			show_choice_name: 'Показ:',
-			show_choice: ['Всех', 'Ранних 🟢', 'Поздних 🟡', 'Ушедший 🔴'],
-			class_start_time_name: 'Время:',
-			save_button: 'Сохранить',
-		},
-		updateHTML: {
-			name_2: 'Выберите Класс',
-			Cancel: 'Отменить',
-			Edit: 'Изменить',
-			Delete: 'Удалить',
-		}
+	"ru": {
+		"add-card-title": "Новый Класс",
+		"add-class-name": "Имя класса",
+		"add-tag-container-label": "Имя участников",
+		"add-all-students": "Добавить Всех Учеников",
+		
+		"select-card-title": "Выберите Класс",
+
+		"cancel-button": "Отменить",
+		"add-button": "Добавить",
+		"edit-button": "Изменить",
+		"delete-button": "Удалить",
+
+		"attendance-card-title": "Посещаемость",
+		"attendance-class-list": "Класс:",
+		"attendance-filter-list": "Показ:",
+
+		"attendance-select-filter-all": "Всеx",
+		"attendance-select-filter-early": "Ранних 🟢",
+		"attendance-select-filter-late": "Поздних 🟡",
+		"attendance-select-filter-gone": "Ушедшиx 🔴",
+
+		"period-time": "Время:",
+		"export-button": "Экспорт",
 	}
 }
-function updateCards() {
-	chrome.storage.sync.get(['lang'], function(request) {
-		document.querySelector('.new-class-name').innerText = meetLanguage[request.lang]['classHTML']['new_class_name'];
-		document.querySelector('.input-name-class-name').innerText = meetLanguage[request.lang]['classHTML']['input_name_class_name'];
-		document.querySelector('.student-names').innerText = meetLanguage[request.lang]['classHTML']['student_names'];
-		document.querySelector('#ICP').innerText = meetLanguage[request.lang]['classHTML']['ICP'];
-		document.querySelector('#Ok').innerText = meetLanguage[request.lang]['classHTML']['Ok'];
 
-
-		document.querySelectorAll('.Cancel').forEach((element)=>{
-			element.innerText = meetLanguage[request.lang]['classHTML']['Cancel'];
-		});
-
-		document.querySelectorAll('.name-2').forEach((element)=>{
-			element.innerText = meetLanguage[request.lang]['updateHTML']['name_2'];
-		});
-
-		document.querySelector('#Edit').innerText = meetLanguage[request.lang]['updateHTML']['Edit'];
-	    document.querySelector('#Delete').innerText = meetLanguage[request.lang]['updateHTML']['Delete'];
-	});
-}
+// const meetLanguage = {
+// 	en: {
+// 		popup: {
+// 			popup_name: 'Class',
+// 			popup_add_class: 'Add Class',
+// 			popup_edit_class: 'Edit Class',
+// 			popup_del_class: 'Delete Class',
+// 			language: 'Language',
+// 			link: 'https://www.youtube.com/watch?v=xhnKGd76ZOg',
+// 		},
+// 	},
+// 	ru: {
+// 		popup: {
+// 			popup_name: 'Класс',
+// 			popup_add_class: 'Добавить Класс',
+// 			popup_edit_class: 'Изменить Класс',
+// 			popup_del_class: 'Удалить Класс',
+// 			language: 'Язык',
+// 			link: 'https://www.youtube.com/watch?v=VyXnD_9f6Kg'
+// 		},
+// 	}
+// }

@@ -1,0 +1,81 @@
+:root {
+    --font-size: 14px;
+    --theme-color: #1a73e8;
+    --darker-theme-color: #174ea6;
+    --error-color: #c5221f;
+    --light-grey: #ccc;
+    --grey: #5f6368;
+}
+
+#attendance-container {
+    width: 312px;
+    max-width: 360px;
+    padding: 0px 24px;
+    margin: 12px 0px;
+    font-family: "Google Sans";
+
+    font-size: var(--font-size);
+}
+#attendance-container main {
+    display: flex;
+    flex-direction: column;
+}
+#attendance-container main > :not(:last-child) {
+    margin-bottom: 8px;
+}
+#attendance-container main .settings {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+}
+#period-time {
+    background-color: white;
+    font-size: 14px;
+    margin-left: 2px; 
+    padding: 0.3em 0.2em;
+    border: solid 1px var(--grey);
+    border-radius: 5px;
+}
+#class-list, #filter-list {
+    background-color: white;
+    padding: 0.3em 0.2em;
+    font-family: 'Google Sans';
+    font-size: 14px;
+    border-radius: 7%;
+    margin-right: auto; 
+}
+.student-attendance-list {
+    width: auto;
+    height: auto;
+
+    margin: 0;
+    padding: 0;
+
+    list-style-type: none;
+}
+.export-button {
+    color: var(--theme-color);
+    background: white;
+}
+.student-names {
+    font-family: 'Google Sans';
+    margin: 0.25em 0.5em;
+    font-weight: 500;
+}
+.student-attendance-list-item {
+    background-color: white;
+    margin: 0 0 8px 0.5em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.student-attendance-list-item p {
+    margin: 0;
+}
+.student-attendance-list-item button {
+    padding: 6px;
+    border: none;
+    background-color: white;
+    font-size: 16.5px;
+}

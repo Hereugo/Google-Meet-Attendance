@@ -1,6 +1,6 @@
 {
 	"name": "Meet Attendance List",
-	"version": "1.4",
+	"version": "1.5",
 	"description": "Monitor who attendant your class/meeting!",
 	"background": {
 		"scripts": ["js/listeners.js"],
@@ -10,8 +10,12 @@
 	"content_scripts": [
 		{
 			"matches": ["*://meet.google.com/**-**-**"],
-			"js": ["js/3D party/jquery-3.6.0.min.js", "js/contentScript.js", "js/classButtons.js", "js/tagbox-logic.js", "js/html-templates.js", "js/translations.js"],
-			"css": ["css/style.css", "css/pro.min.css"]
+			"js": ["js/3D party/jquery-3.6.0.min.js",
+				   	"js/util.js", "js/translations.js",  
+					"js/cards/cardTemplates.js", "js/cards/attendanceTemplate.js",
+				    "js/cards/tagClass.js", "js/cards/cardClasses.js", "js/cards/attendanceClass.js",
+					"js/contentScript.js"],
+			"css": ["css/pro.min.css", "css/attendance.css", "css/card.css"]
 		}
 	],
 	"permissions": ["storage", "tabs"],

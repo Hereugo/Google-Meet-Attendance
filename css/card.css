@@ -1,0 +1,170 @@
+:root {
+    --font-size: 14px;
+    --theme-color: #1a73e8;
+    --darker-theme-color: #174ea6;
+    --error-color: #c5221f;
+    --light-grey: #ccc;
+    --grey: #5f6368;
+}
+
+.card-container {
+    visibility: hidden;
+
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.background-shadow {
+    z-index: 101;
+    background: rgba(0,0,0,.4);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+.separator {
+    border-top: 1px solid rgba(0,0,0,0.12);
+    margin: 7px 0;
+}
+.card {
+    background-color: white;
+
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    
+
+    font-family: "Google Sans";
+
+    z-index: 102;
+
+    width: 60%;
+    height: auto;
+
+    border-radius: 5px;
+
+    padding: 0.5em;
+}
+.card header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.card-title {
+    margin: 0.5em auto;
+    text-align: center;
+
+    font-weight: 400;
+    letter-spacing: 0.75px;
+}
+.card main > :not(:last-child) {
+    margin-bottom: 8px;
+}
+
+input#class-name {
+    background-color: white;
+    font-size: var(--font-size);
+    padding: 0.3em 0.2em;
+    border: 1px solid var(--grey);
+    border-radius: 5px;
+}
+input#class-name:hover {
+    border: 1px solid black;
+}
+
+#tag-container {
+    border: 1px solid var(--theme-color);
+    border-radius: 5px;
+
+    background: white;
+    
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    padding: 3px;
+    
+    min-height: 177px;
+    max-height: 186px;
+    overflow-y: auto;
+    flex: 1 1 auto;
+}
+.tag {
+    font-size: var(--font-size);
+    margin: 2.5px;
+    padding: 3px 3px;
+    border: 1px solid var(--light-grey);
+    border-radius: 3px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    color: #333;
+    cursor: default;
+}
+.tag i {
+    font-size: var(--font-size);
+    color: #666;
+    margin-left: 0.5em;
+}
+.tag i:hover .tag {
+    border: 1px solid var(--grey);
+}
+#tag-input {
+    padding: 5px;
+    font-size: var(--font-size);
+    border: 0;
+    outline: none;
+    background: white !important;
+    font-family: 'Google Sans';
+    color: var(--grey);
+    flex: 1;
+    height: auto;
+}
+
+.action-buttons-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    font-weight: 600;
+    color: var(--theme-color);
+    letter-spacing: 1.5px;
+    font-family: inherit;
+    text-transform: uppercase;
+    
+    padding: 0.5em 1em;
+    
+    /* Default button look */
+    border: 1px solid var(--grey);
+    background: white;
+}
+.add-button, .edit-button {
+    border: none;
+    background: var(--theme-color);
+    color: white;
+}
+.delete-button {
+    border: none;
+    background: var(--error-color);
+    color: white;
+}
+
+.select-class {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+}
+.select-class option {
+    text-align: center;
+
+    font-family: inherit;
+    font-size: var(--font-size);
+    
+    padding: 0.25em 1em;
+}
