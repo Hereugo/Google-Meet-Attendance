@@ -12,7 +12,7 @@
 			"matches": ["*://meet.google.com/**-**-**"],
 			"js": ["js/3D party/jquery-3.6.0.min.js",
 				   	"js/util.js", "js/translations.js",  
-					"js/cards/cardTemplates.js", "js/cards/attendanceTemplate.js",
+					"js/cards/templates/cardTemplates.js", "js/cards/templates/attendanceTemplate.js",
 				    "js/cards/tagClass.js", "js/cards/cardClasses.js", "js/cards/attendanceClass.js",
 					"js/contentScript.js"],
 			"css": ["css/pro.min.css", "css/attendance.css", "css/card.css"]
@@ -20,8 +20,7 @@
 	],
 	"permissions": ["storage", "tabs"],
 	"browser_action": {
-		"default_icon": "img/image.png",
-		"default_popup": "html/popup.html"
+		"default_icon": "img/image.png"
 	},
 	"manifest_version": 2
 }

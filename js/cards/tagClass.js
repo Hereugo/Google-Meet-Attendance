@@ -29,7 +29,7 @@ class Tags {
 		var $html = $(`
 		<div class="tag">
 			<span class="tag-label">${label}</span>
-			<i class="material-icons tag-remove" data-item=${label}>close</i>
+			<i class="material-icons tag-remove" data-item="${label}">close</i>
 		</div>`);
 
 		$html.find('.tag-remove').click(this.removeTag.bind(this));
@@ -42,14 +42,13 @@ class Tags {
 
 		// Reverse the copy of tags and then prepend 
 		// because one of the children is tag-input that should be always last
-		[...this.tags].reverse().forEach(tag => {
-			this.tagContainer.prepend(this.createTag(tag));
+		[...this.tags].reverse().forEach(tagLabel => {
+			this.tagContainer.prepend(this.createTag(tagLabel));
 		});
 	}
 
 	addTags(tags = []) {
 		this.tags = [...this.tags, ...tags]; // Concatenate arrays
-		console.log(this.tags)
 		this.updateContainer();
 	}
 

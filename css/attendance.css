@@ -3,36 +3,52 @@
     --theme-color: #1a73e8;
     --darker-theme-color: #174ea6;
     --error-color: #c5221f;
-    --light-grey: #ccc;
     --grey: #5f6368;
 }
 
 #attendance-container {
-    width: 312px;
-    max-width: 360px;
-    padding: 0px 24px;
+    width: 324px;
+    max-width: 356px;
+    padding: 0px 16px;
     margin: 12px 0px;
     font-family: "Google Sans";
 
     font-size: var(--font-size);
+
+    color: var(--grey);
 }
-#attendance-container main {
+#attendance-container .attendance-content {
     display: flex;
+    padding: 0 8px;
     flex-direction: column;
 }
-#attendance-container main > :not(:last-child) {
+#attendance-container .attendance-content > :not(:last-child) {
     margin-bottom: 8px;
 }
-#attendance-container main .settings {
+#attendance-container .attendance-content .settings {
     display: flex;
     flex-direction: row;
 
     justify-content: space-between;
 }
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.container .name {
+    display: flex;
+    align-items: center;
+}
+.container .name label {
+    margin-left: 1em;
+}
+
 #period-time {
     background-color: white;
-    font-size: 14px;
-    margin-left: 2px; 
+    font-size: var(--font-size);
+    color: inherit;
     padding: 0.3em 0.2em;
     border: solid 1px var(--grey);
     border-radius: 5px;
@@ -41,10 +57,11 @@
     background-color: white;
     padding: 0.3em 0.2em;
     font-family: 'Google Sans';
-    font-size: 14px;
+    font-size: var(--font-size);
+    color: inherit;
     border-radius: 7%;
-    margin-right: auto; 
 }
+
 .student-attendance-list {
     width: auto;
     height: auto;
@@ -56,6 +73,7 @@
 }
 .export-button {
     color: var(--theme-color);
+    margin-left: auto;
     background: white;
 }
 .student-names {
@@ -71,6 +89,7 @@
     align-items: center;
 }
 .student-attendance-list-item p {
+    color: inherit;
     margin: 0;
 }
 .student-attendance-list-item button {
@@ -78,4 +97,10 @@
     border: none;
     background-color: white;
     font-size: 16.5px;
+}
+
+.no-class-message {
+    text-align: center;
+    font-size: var(--font-size);
+    display: none;
 }

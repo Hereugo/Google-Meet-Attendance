@@ -7,7 +7,8 @@ class Attendance {
     }
 
     setup() {
-        $('.r6xAKc:nth(1)').on('click', (() => {
+        // Second since we are prepending a new setting button
+        $('.r6xAKc:nth(2)').on('click', (() => {
             onReady('.crqnQb', '.ggUFBf', this.injectHTML.bind(this));
         }).bind(this));
     }
@@ -41,16 +42,23 @@ class Attendance {
     }
 
     async open() {
-        // TODO: When there is no class created, show a create class message
         await this.translate();
-    
+
         await this.setState();
-        
-        await this.updateAttendanceList();
     }
 
     async setState() {
         let {classes, selectedClassID, selectedFilterID, selectedPeriod} = await getStorageData(['classes', 'selectedClassID', 'selectedFilterID', 'selectedPeriod'])
+
+        if (classes.length == 0) { // Class is empty
+            this.$container.find('.no-class-message').css({display: 'block'});
+            this.$container.find('.attendance-content').css({display: 'none'});
+
+            return;
+        } else {
+            this.$container.find('.no-class-message').css({display: 'none'});
+            this.$container.find('.attendance-content').css({display: 'block'});
+        }
 
         let firstClassId = classes[0] ? classes[0].id : "";
         classes.forEach(((cls) => {
@@ -61,6 +69,8 @@ class Attendance {
         this.$classList.find(`option[value="${selectedClassID || firstClassId}"]`).attr('selected', true);
         this.$filterList.find(`option[value="${selectedFilterID}"]`).attr('selected', true);
         this.$periodTime.val(selectedPeriod);
+
+        await this.updateAttendanceList();
     }
 
     async updateAttendanceList() {
@@ -141,14 +151,14 @@ class Attendance {
         let {classes, selectedClassID} = await getStorageData(['classes', 'selectedClassID']);
         let selectedClass = classes.find(cls => cls.id == selectedClassID);
 
-        // TODO: CSV cannot handle emojis, so we need to convert them to text
         let studentArr = selectedClass.students.map(student => {
             return {
                 'name': student.name || "No name",
-                'type': student.type || "🔴",
+                'type': student.type == "🟢" ? "Early": student.type == "🟡" ? "Late": "Abscent",
                 'time': student.time || "--:--",
             };
         });
+
 
         let csvStr = arrToCSV(studentArr, ['name', 'type', 'time']);
 
@@ -158,7 +168,7 @@ class Attendance {
     async translate() {
         let {language} = await getStorageData(['language']);
 
-        this.$container.find('[data-translate]').each(() => {
+        this.$container.find('[data-translate]').each(function() {
             let $this = $(this);
 
             let key = $this.attr('data-translate');

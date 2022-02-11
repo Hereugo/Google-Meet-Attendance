@@ -3,8 +3,14 @@
     --theme-color: #1a73e8;
     --darker-theme-color: #174ea6;
     --error-color: #c5221f;
+    --darker-error-color: #a11f1a;
     --light-grey: #ccc;
+    --lighter-grey: #f5f5f5;
     --grey: #5f6368;
+}
+
+label {
+    font-size: var(--font-size);
 }
 
 .card-container {
@@ -14,6 +20,8 @@
     position: absolute;
     width: 100%;
     height: 100%;
+
+    color: var(--grey);
 }
 .background-shadow {
     z-index: 101;
@@ -49,11 +57,9 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 }
 .card-title {
-    margin: 0.5em auto;
-    text-align: center;
-
     font-weight: 400;
     letter-spacing: 0.75px;
 }
@@ -134,7 +140,7 @@ input#class-name:hover {
 
     font-weight: 600;
     color: var(--theme-color);
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
     font-family: inherit;
     text-transform: uppercase;
     
@@ -144,7 +150,19 @@ input#class-name:hover {
     border: 1px solid var(--grey);
     background: white;
 }
-.add-button, .edit-button {
+.close-button {
+    border: none;
+    border-radius: 50%;
+    background: white;
+    width: 3.5em;
+    height: 3.5em;
+}
+.add-button {
+    border: none;
+    background: var(--theme-color);
+    color: white;
+}
+.edit-button {
     border: none;
     background: var(--theme-color);
     color: white;
@@ -153,6 +171,16 @@ input#class-name:hover {
     border: none;
     background: var(--error-color);
     color: white;
+}
+
+.close-button:hover , .button:hover {
+    background: var(--lighter-grey);
+}
+.add-button:hover, .edit-button:hover {
+    background: var(--darker-theme-color);
+}
+.delete-button:hover {
+    background: var(--darker-error-color);
 }
 
 .select-class {
@@ -167,4 +195,22 @@ input#class-name:hover {
     font-size: var(--font-size);
     
     padding: 0.25em 1em;
+}
+
+
+.class-settings-button-container {
+    display: flex;
+    flex-direction: column;
+}
+.class-settings-button-container > :not(:last-child) {
+    margin-bottom: 0.5em;
+}
+#language-select {
+    width: 100%;
+
+    padding: 0.25em 1em;
+}
+#language-select option {    
+    text-align: center;
+    font-family: inherit;
 }

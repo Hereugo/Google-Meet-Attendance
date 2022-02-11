@@ -1,5 +1,5 @@
 //Globals
-var addClassCard, editClassCard, deleteClassCard;
+var addClassCard, editClassCard, deleteClassCard, settingsCard;
 var attedanceObserver;
 const sessionStorage = window.sessionStorage;
 
@@ -51,28 +51,12 @@ function initialize() {
                 addClassCard = new AddClassCard(screen);
                 editClassCard = new EditClassCard(screen);
                 deleteClassCard = new DeleteClassCard(screen);
+                settingsCard = new SettingsCard(screen);
 
                 attedanceObserver = new Attendance();
             }
         }
     );
-
-    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-        switch(request.data) {
-            case 'add-class': {
-                addClassCard.open();
-                break;
-            }
-            case 'edit-class': {
-                editClassCard.open();
-                break;
-            }
-            case 'del-class': {
-                deleteClassCard.open();
-                break;
-            }
-        }
-    });
 }
 
 function updateJoinedStudents(names) {
@@ -81,10 +65,16 @@ function updateJoinedStudents(names) {
     let joined = JSON.parse(sessionStorage.getItem('joined'));
     console.log(joined, names);
 
-    for (let name in names) {
-        if (!joined[name]) 
-            joined[name] = ctime;
-    }
-        
+    // Add a new entry for each new student
+    names.forEach(name => {
+        if (!joined[name]) joined[name] = ctime;
+    });
+    
+    // Remove entries for students who left
+    Object.keys(joined).forEach(name => {
+        if (!names.includes(name) && joined[name])
+            delete joined[name];
+    });
+
     sessionStorage.setItem('joined', JSON.stringify(joined));
 }

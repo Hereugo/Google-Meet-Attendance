@@ -42,10 +42,10 @@ class Card {
     async translate() {
         let {language} = await getStorageData(['language']);
 
-        this.$card.find('[data-translate]').each(() => {
+        this.$card.find('[data-translate]').each(function() {
             let $this = $(this);
-
             let key = $this.attr('data-translate');
+            
             let translation = translations[language][key];
 
             $this.text(translation);
@@ -76,12 +76,12 @@ class AddClassCard extends Card {
     }
 
     async open(classID = "") {
-        await this.translate();
+        await this.translate(); 
         await this.setState(classID);
 
         this.show();
     }
-    async setState(classID) {
+    async setState(classID = "") {
         this.currentClassID = classID;
 
         if (classID == "") {
@@ -99,7 +99,7 @@ class AddClassCard extends Card {
     init() {
         // https://stackoverflow.com/questions/55755731/get-variable-of-class-inside-onclick-function
         this.$card.find('.add-button').click(this.save.bind(this));
-        this.$card.find('.cancel-button').click(this.hide.bind(this));
+        this.$card.find('.cancel-button,.close-button,.background-shadow').click(this.hide.bind(this));
         this.$card.find('.add-all-students-button').click(this.addAllStudents.bind(this));
     }
 
@@ -139,12 +139,11 @@ class AddClassCard extends Card {
 
     addAllStudents() {
         let joinedStudents = JSON.parse(sessionStorage.getItem('joined'));
+        console.log(joinedStudents);
 
-        for (let name in joinedStudents) {
-            if (this.tagContainer.getTags().indexOf(name) == -1) {
-                this.tagContainer.addTag(name);
-            }
-        }
+        let tags = this.tagContainer.getTags();
+        let namesToAdd = Object.keys(joinedStudents).filter(key => tags.indexOf(key) == -1);
+        this.tagContainer.addTags(namesToAdd);
     }
 }
 
@@ -163,7 +162,7 @@ class EditClassCard extends Card {
     }
 
     init() {
-        this.$card.find('.cancel-button').click(this.hide.bind(this));
+        this.$card.find('.cancel-button,.close-button,.background-shadow').click(this.hide.bind(this));
         this.$card.find(".edit-button").click(this.edit.bind(this));
     }
 
@@ -191,7 +190,7 @@ class DeleteClassCard extends Card {
     }
 
     init() {
-        this.$card.find('.cancel-button').click(this.hide.bind(this));
+        this.$card.find('.cancel-button,.close-button,.background-shadow').click(this.hide.bind(this));
         this.$card.find(".delete-button").click(this.delete.bind(this));
     }
 
@@ -204,5 +203,64 @@ class DeleteClassCard extends Card {
         await setStorageData({'classes': classes});
         
         this.hide();
+    }
+}
+
+class SettingsCard extends Card {
+    constructor($parent) {
+        super();
+
+        this.html = settingsCardHTML;
+        this.injectHTML($parent);
+
+        this.id = "class-settings-card";
+        this.$card = $("#" + this.id);
+        this.$langSelect = this.$card.find("#language-select");
+
+        this.init();
+    }
+
+    init() {
+        const $nav = $(".SGP0hd.kunNie");
+
+        // Nav Button setup
+        $nav.prepend(buttonNavHTML);
+        $("#settings-nav-button").find("button").on('click', this.open.bind(this));
+
+        const onOpen = ((foo) => {
+            this.hide();
+
+            foo.open();
+        }).bind(this);
+
+        // Class button setup
+        this.$card.find(".add-button").click(() => onOpen(addClassCard));
+        this.$card.find(".edit-button").click(() => onOpen(editClassCard));
+        this.$card.find(".delete-button").click(() => onOpen(deleteClassCard));
+
+        this.$card.find(".close-button,.background-shadow").click(this.hide.bind(this));
+        this.$langSelect.change(this.updateLanguage.bind(this));
+    }
+
+    async open() {
+        this.translate();
+
+        await this.setState();
+
+        this.show();
+    }
+
+    async setState() {
+        let {language} = await getStorageData(['language']);
+
+        this.$langSelect.find("option[value='" + language + "']").prop("selected", true);
+    }
+
+    async updateLanguage() {
+        let lang = this.$langSelect.find(":selected").val();
+
+        await setStorageData({'language': lang});
+
+        this.translate();
     }
 }

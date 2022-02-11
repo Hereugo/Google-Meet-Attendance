@@ -1,7 +1,7 @@
 const translations = {
 	"en": {
 		"add-card-title": "New Class",
-		"add-class-name": "Class name",
+		"add-class-name": "Class name:",
 		"add-tag-container-label": "Student names",
 		"add-all-students": "Add All Students",
 		
@@ -15,6 +15,7 @@ const translations = {
 		"attendance-card-title": "Attendance",
 		"attendance-class-list": "Class:",
 		"attendance-filter-list": "Filter:",
+		"no-class-message": "Classes are empty, create a new class",
 
 		"attendance-select-filter-all": "All",
 		"attendance-select-filter-early": "Early 🟢",
@@ -22,11 +23,13 @@ const translations = {
 		"attendance-select-filter-gone": "Gone 🔴",
 
 		"period-time": "Period:",
-		"export-button": "Export",
+		"export-button": "Export as CSV",
+
+		"settings-card-title": "Settings Class",
 	},
 	"ru": {
 		"add-card-title": "Новый Класс",
-		"add-class-name": "Имя класса",
+		"add-class-name": "Имя класса:",
 		"add-tag-container-label": "Имя участников",
 		"add-all-students": "Добавить Всех Учеников",
 		
@@ -40,6 +43,7 @@ const translations = {
 		"attendance-card-title": "Посещаемость",
 		"attendance-class-list": "Класс:",
 		"attendance-filter-list": "Показ:",
+		"no-class-message": "Нет классов, создайте новый класс",
 
 		"attendance-select-filter-all": "Всеx",
 		"attendance-select-filter-early": "Ранних 🟢",
@@ -47,29 +51,8 @@ const translations = {
 		"attendance-select-filter-gone": "Ушедшиx 🔴",
 
 		"period-time": "Время:",
-		"export-button": "Экспорт",
+		"export-button": "Экспорт как CSV",
+
+		"settings-card-title": "Настройки Класса"
 	}
 }
-
-// const meetLanguage = {
-// 	en: {
-// 		popup: {
-// 			popup_name: 'Class',
-// 			popup_add_class: 'Add Class',
-// 			popup_edit_class: 'Edit Class',
-// 			popup_del_class: 'Delete Class',
-// 			language: 'Language',
-// 			link: 'https://www.youtube.com/watch?v=xhnKGd76ZOg',
-// 		},
-// 	},
-// 	ru: {
-// 		popup: {
-// 			popup_name: 'Класс',
-// 			popup_add_class: 'Добавить Класс',
-// 			popup_edit_class: 'Изменить Класс',
-// 			popup_del_class: 'Удалить Класс',
-// 			language: 'Язык',
-// 			link: 'https://www.youtube.com/watch?v=VyXnD_9f6Kg'
-// 		},
-// 	}
-// }
