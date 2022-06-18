@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <card id="add-class-card" class="card-container">
+        <div class="background-shadow"></div>
+    
+        <div class="card">
+            <header>
+                <h2 class="card-title" data-translate="add-card-title">New Class</h2>
+    
+                <button id="add-class-close" class="close-button">
+                    <i class="material-icons">close</i>
+                </button>
+            </header>
+    
+            <div class="separator"></div>
+    
+            <main>
+                <div class="input-field">
+                    <label class="label-text" for="class-name" data-translate="add-class-name">Class Name: </label>
+                    <input id="class-name" type="text"/>
+                </div>
+            
+                <div class="tags-input-field">
+                    <label class="label-text" for="tag-container" data-translate="add-tag-container-label">Student Names</label>
+                    <div id="tag-container"> <input id="tag-input"/> </div>
+                </div>
+    
+                <button class="add-all-students-button button" style="width: 100%;">
+                    <i class="material-icons">add</i>
+                    <span data-translate="add-all-students">Add All Students</span>
+                </button>
+    
+                <div class="separator"></div>
+    
+                <div class="action-buttons-container">
+                    <button class="cancel-button button" data-translate="cancel-button">Cancel</button>
+                    <button class="add-button button" style="margin-left: 1em;" data-translate="add-button">Add</button>
+                </div>
+            </main>
+        </div>
+    </card>
+</body>
+</html>

@@ -1,12 +1,8 @@
 {
 	"name": "Meet Attendance List",
-	"version": "1.5",
+	"version": "1.5.1",
 	"description": "Monitor who attendant your class/meeting!",
-	"background": {
-		"scripts": ["js/listeners.js"],
-		"persistent": false
-	},
-	"web_accessible_resources": ["js/inject.js"],
+	"web_accessible_resources": ["js/inject.js", "img/bmc.png"],
 	"content_scripts": [
 		{
 			"matches": ["*://meet.google.com/**-**-**"],
@@ -18,7 +14,7 @@
 			"css": ["css/pro.min.css", "css/attendance.css", "css/card.css"]
 		}
 	],
-	"permissions": ["storage", "tabs"],
+	"permissions": ["storage"],
 	"browser_action": {
 		"default_icon": "img/image.png"
 	},

@@ -133,6 +133,9 @@ const settingsCardHTML = `
                 <button class="add-button button" data-translate="add-button">New Class</button>
                 <button class="edit-button button" data-translate="edit-button">Edit Class</button>
                 <button class="delete-button button" data-translate="delete-button">Delete Class</button>
+                <a class="donate-button button" href="https://www.buymeacoffee.com/thereug6" target="_blank" data-translate="donate-button">
+                    <img src="$donateBmsSrc"/>
+                </a> 
             </div>
 
             <div class="separator"></div>

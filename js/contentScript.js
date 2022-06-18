@@ -38,26 +38,18 @@ window.addEventListener('message', (event) => {
 });
 
 function initialize() {
-    chrome.runtime.sendMessage(
-        {
-            data: 'starting...',
-        },
-        function (response) {
-            if (response.ready) {
-                $('head').append(materialIconHTML);
+    $('head').append(materialIconHTML);
 
-                const screen = $('.crqnQb');
+    const screen = $('.crqnQb');
 
-                addClassCard = new AddClassCard(screen);
-                editClassCard = new EditClassCard(screen);
-                deleteClassCard = new DeleteClassCard(screen);
-                settingsCard = new SettingsCard(screen);
+    addClassCard = new AddClassCard(screen);
+    editClassCard = new EditClassCard(screen);
+    deleteClassCard = new DeleteClassCard(screen);
+    settingsCard = new SettingsCard(screen);
 
-                attedanceObserver = new Attendance();
-            }
-        }
-    );
+    attedanceObserver = new Attendance();
 }
+
 
 function updateJoinedStudents(names) {
     let ctime = getCurrentTime();

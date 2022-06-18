@@ -211,6 +211,9 @@ class SettingsCard extends Card {
         super();
 
         this.html = settingsCardHTML;
+        let donateBmsSrc = chrome.runtime.getURL("img/bmc.png");
+        this.html = this.html.replace("$donateBmsSrc", donateBmsSrc);
+
         this.injectHTML($parent);
 
         this.id = "class-settings-card";

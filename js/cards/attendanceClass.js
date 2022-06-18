@@ -48,7 +48,7 @@ class Attendance {
     }
 
     async setState() {
-        let {classes, selectedClassID, selectedFilterID, selectedPeriod} = await getStorageData(['classes', 'selectedClassID', 'selectedFilterID', 'selectedPeriod'])
+        let {classes, selectedClassID, selectedFilterID, selectedPeriod} = await getStorageData(['classes', 'selectedClassID', 'selectedFilterID', 'selectedPeriod']);
 
         if (classes.length == 0) { // Class is empty
             this.$container.find('.no-class-message').css({display: 'block'});

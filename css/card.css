@@ -7,6 +7,8 @@
     --light-grey: #ccc;
     --lighter-grey: #f5f5f5;
     --grey: #5f6368;
+    --donate-color: #FFDD00;
+    --darker-donate-color: #FFCC00;
 }
 
 label {
@@ -87,10 +89,12 @@ input#class-name:hover {
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
-    padding: 3px;
+    /* padding: 3px; */
     
     min-height: 177px;
     max-height: 186px;
+    width: 100%;
+
     overflow-y: auto;
     flex: 1 1 auto;
 }
@@ -172,6 +176,17 @@ input#class-name:hover {
     background: var(--error-color);
     color: white;
 }
+.donate-button {
+    border: none;
+    background: var(--donate-color);
+    color: black;
+    
+    text-decoration: none;
+    text-transform: none;
+}
+.donate-button img {
+    height: 28px;
+}
 
 .close-button:hover , .button:hover {
     background: var(--lighter-grey);
@@ -181,6 +196,10 @@ input#class-name:hover {
 }
 .delete-button:hover {
     background: var(--darker-error-color);
+}
+.donate-button:hover {
+    background: var(--darker-donate-color);
+    color: black;
 }
 
 .select-class {
